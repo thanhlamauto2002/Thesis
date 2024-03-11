@@ -1,0 +1,41 @@
+.station-nav .active {
+  background-color: dodgerblue;
+}
+
+
+.station-nav {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  height: 50px;
+  justify-content: space-around;
+}
+
+
+
+
+.station-nav ul {
+  display: flex;
+}
+
+.station-nav ul li {
+  list-style: none;
+}
+
+.station-nav li a {
+  display: block;
+  gap: 2;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  margin-right: 50px;
+  margin-left: 50px;
+
+}
+
+.station-nav ul li a:hover {
+  background-color: deepskyblue;
+}

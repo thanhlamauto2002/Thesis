@@ -1,0 +1,81 @@
+body {
+  height: 100vh;
+  margin: 0;
+  background-size: cover;
+}
+
+.appBar {
+  background-color: white;
+  height: 100vh;
+  width: 100%;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+  font-size: 23px;
+  font-weight: 600;
+  padding-top: 30px;
+}
+
+.text {
+  font-weight: 600;
+
+}
+
+body .container-login {
+  background-image: url('~/assets/login-bg.png');
+  max-width: none;
+  display: flex;
+  overflow: hidden !important;
+  height: 100%;
+}
+
+.contentBar .station-container {
+  height: 100%;
+
+}
+
+.contentBar .station-container .station-home {
+  background-image: url('~/assets/anh1.png');
+  background-size: cover;
+  height: 637.6px;
+}
+
+
+
+.contentBar {
+  height: 687.6px;
+  overflow: hidden;
+}
+
+.chart-container .row {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  flex: 1 0 33.33%;
+  overflow: hidden;
+  justify-items: center;
+  justify-content: space-between;
+  margin-left: -10px;
+}
+
+.chart-container .row .col {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 33.33%;
+  margin-left: 2px;
+  align-items: center;
+  margin-right: 10px
+}
+
+.chart-container .row .col p {
+  margin-bottom: -30px;
+  font-weight: bolder;
+}

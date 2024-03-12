@@ -15,6 +15,7 @@ import Home from './pages/Home1'
 import BachKhoa from '~/pages/BachKhoa'
 import HauGiang from '~/pages/HauGiang'
 import TraVinh from '~/pages/TraVinh'
+import Alarm from './pages/Alarm'
 function App() {
   return (
     <>
@@ -24,6 +25,7 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/stations' element={<Station />} />
           <Route path='/maps' element={<Map />} />
+          <Route path='/alarm' element={<Alarm />} />
           <Route path='/login' element={<Login />} />
           <Route path='/bachkhoastation' element={<BachKhoa />} />
           <Route path='/haugiangstation' element={<HauGiang />} />

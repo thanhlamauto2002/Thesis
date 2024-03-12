@@ -68,7 +68,7 @@
 .wrapper button {
   width: 100%;
   height: 45px;
-  background: cadetblue;
+  background: #fff;
   border: none;
   outline: none;
   border-radius: 40px;
@@ -77,6 +77,17 @@
   font-size: 16px;
   color: #333;
   font-weight: 700;
+
+  &.active {
+    background-color: cadetblue;
+
+  }
+}
+
+button[disabled=disabled],
+button:disabled {
+  cursor: not-allowed;
+  background-color: gray;
 }
 
 .wrapper .register-link {

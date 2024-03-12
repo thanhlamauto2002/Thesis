@@ -15,8 +15,12 @@ export default function NavBar() {
           <NavLink to='/maps'>Maps</NavLink>
         </li>
         <li >
+          <NavLink to='/alarm'>Alarm</NavLink>
+        </li>
+        <li >
           <NavLink to='/login' className='login1'>Login</NavLink>
         </li>
+
       </ul>
     </nav>
   )

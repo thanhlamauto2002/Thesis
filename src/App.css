@@ -1,81 +1,154 @@
-body {
+.App {
+  width: 100vw;
   height: 100vh;
-  margin: 0;
-  background-size: cover;
+  display: flex;
+  flex-direction: column;
 }
 
-.appBar {
-  background-color: white;
-  height: 100vh;
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.Sidebar {
+  height: 100%;
+  width: 180px;
+  background-color: #2F4050;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.SidebarList {
+  height: auto;
+  padding: 0;
+  width: 100%;
+  margin-top: 0;
+}
+
+.SidebarList .row {
+
+  width: 100%;
+  height: 60px;
+  list-style-type: none;
+  margin: 0%;
+  display: flex;
+  border: 0.5px solid black;
+  flex-direction: row;
+  color: white;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+}
+
+
+.SidebarList .row:hover {
+  cursor: pointer;
+  background-color: #293846;
+}
+
+.SidebarList #active {
+  background-color: #03070b;
+}
+
+.row #icon {
+  flex: 30%;
+  display: grid;
+  place-items: center;
+}
+
+.row #title {
+  flex: 70%;
+}
+
+
+
+
+.app-bar a {
+  color: white;
+  text-decoration: none;
+  flex-direction: column;
+  position: relative;
+  justify-items: right;
+  align-items: center;
+  margin-right: 50px;
+  padding: 0.6rem;
+  border-radius: 0.6rem;
+
+}
+
+.app-bar a:hover {
+  background-color: #293846;
+}
+
+.app-bar ul {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  justify-items: center;
+  align-items: center;
+}
+
+.app-bar {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  height: 60px;
+  background-color: #2F4050;
   width: 100%;
 }
 
-.login-container {
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-}
-
-.title {
-  text-align: center;
-  font-size: 23px;
-  font-weight: 600;
-  padding-top: 30px;
-}
-
-.text {
-  font-weight: 600;
-
-}
-
-body .container-login {
-  background-image: url('~/assets/login-bg.png');
-  max-width: none;
-  display: flex;
-  overflow: hidden !important;
+.side-bar {
+  width: 100%;
   height: 100%;
+  display: flex;
+
 }
 
-.contentBar .station-container {
+.main-content {
+  width: calc(100vw - 180px);
+  height: calc(100vh - 60px);
+}
+
+.container-login {
   height: 100%;
-
-}
-
-.contentBar .station-container .station-home {
-  background-image: url('~/assets/anh1.png');
-  background-size: cover;
-  height: 637.6px;
-}
-
-
-
-.contentBar {
-  height: 687.6px;
-  overflow: hidden;
-}
-
-.chart-container .row {
-  margin-top: 30px;
-  margin-bottom: 20px;
+  width: 100%;
   display: flex;
-  flex-direction: row;
-  flex: 1 0 33.33%;
-  overflow: hidden;
-  justify-items: center;
-  justify-content: space-between;
-  margin-left: -10px;
-}
-
-.chart-container .row .col {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 33.33%;
-  margin-left: 2px;
+  /* Sử dụng Flexbox */
+  justify-content: center;
+  /* Căn giữa theo chiều ngang */
   align-items: center;
-  margin-right: 10px
+  background-image: url('~/assets/login-bg.png');
 }
 
-.chart-container .row .col p {
-  margin-bottom: -30px;
-  font-weight: bolder;
+.home-container {
+  height: 100%;
+  width: 100%;
+}
+
+.home-container .upper-content {
+  width: 100%;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  display: flex;
+}
+
+.home-container .swiper-container {
+  width: 100%;
+}
+
+.home-container .upper-content .center-content {
+  text-align: center;
+
+}
+
+.home-container .upper-content .center-content h1 {
+  margin-top: 0;
+  margin-bottom: 0;
 }

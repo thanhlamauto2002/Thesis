@@ -2,38 +2,32 @@ import Container from '@mui/material/Container'
 import NavBar from '~/components/NavBar/NavBar'
 import './App.css'
 import { Outlet } from 'react-router-dom'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Routes
-} from 'react-router-dom'
-import Station from './pages/Stations/Station1'
-import Map from './pages/Map1'
-import Login from './pages/LoginForm/Login1'
-import Home from './pages/Home1'
-import BachKhoa from '~/pages/BachKhoa'
-import HauGiang from '~/pages/HauGiang'
-import TraVinh from '~/pages/TraVinh'
-import Alarm from './pages/Alarm'
+import { useState, useEffect } from 'react'
+import socketIOClient from 'socket.io-client'
+import SideBar from './components/SideBar'
+import AppRoute from './routes/AppRoute'
+const socket = socketIOClient('http://localhost:8017/')
 function App() {
+  useEffect(() => {
+    console.log('Connected to server')
+    return () => {
+      socket.disconnect()
+      console.log('Disconnected from server')
+
+    }
+  }, [])
   return (
-    <>
-      <NavBar />
-      <div className='contentBar'>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/stations' element={<Station />} />
-          <Route path='/maps' element={<Map />} />
-          <Route path='/alarm' element={<Alarm />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/bachkhoastation' element={<BachKhoa />} />
-          <Route path='/haugiangstation' element={<HauGiang />} />
-          <Route path='/travinhstation' element={<TraVinh />} />
-        </Routes>
-        <Outlet />
+    <div className='App'>
+      <div className='app-bar'>
+        <NavBar />
       </div>
-    </>
+      <div className='side-bar'>
+        <SideBar />
+        <div className='main-content'>
+          <AppRoute />
+        </div>
+      </div>
+    </div>
   )
 }
 

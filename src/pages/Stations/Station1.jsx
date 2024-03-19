@@ -1,6 +1,5 @@
 import NavStation from '~/pages/Stations/NavStation'
 import './index.css'
-import { Outlet } from 'react-router-dom'
 import {
   BrowserRouter as Router,
   Route,

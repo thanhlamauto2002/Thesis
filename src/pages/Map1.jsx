@@ -1,7 +1,9 @@
+import MapComponent from '~/components/MapComponent'
+
 function Map() {
   return (
     <div>
-      Mapsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+      <MapComponent />
     </div>
   )
 }

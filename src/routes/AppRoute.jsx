@@ -14,7 +14,7 @@ import TraVinh from '~/pages/TraVinh'
 import Alarm from '~/pages/Alarm'
 import Report from '~/pages/report'
 import DashBoard from '~/pages/DashBoard'
-import SideBar from '~/components/SideBar'
+import UserManagement from '~/pages/UserManagement'
 const AppRoute = (props) => {
   return (
     <>
@@ -26,9 +26,10 @@ const AppRoute = (props) => {
         <Route path='/login' element={<Login1 />} />
         <Route path='/report' element={<Report />} />
         <Route path='/dashboard' element={<DashBoard />} />
-        {/* <Route path='/bachkhoastation' element={<BachKhoa />} />
-      <Route path='/haugiangstation' element={<HauGiang />} />
-      <Route path='/travinhstation' element={<TraVinh />} /> */}
+        <Route path='/usersmanage' element={<UserManagement />} />
+        <Route path='/bachkhoastation' element={<BachKhoa />} />
+        <Route path='/haugiangstation' element={<HauGiang />} />
+        <Route path='/travinhstation' element={<TraVinh />} />
       </Routes>
     </>
   )

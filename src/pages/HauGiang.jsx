@@ -97,6 +97,8 @@ function HauGiang() {
           />
         </div>
       </div>
+      <Typography className='station-name' variant="h6" fontWeight="bold">Hau Giang Station</Typography>
+
     </div>
   )
 }

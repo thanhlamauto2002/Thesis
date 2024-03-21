@@ -18,11 +18,7 @@ export const SidebarData = [
     icon: <SpaceDashboardOutlinedIcon />,
     link: '/dashboard'
   },
-  {
-    title: 'Graphs',
-    icon: <StackedLineChartOutlinedIcon />,
-    link: '/stations'
-  },
+
   {
     title: 'Maps',
     icon: <LocationOnOutlinedIcon />,

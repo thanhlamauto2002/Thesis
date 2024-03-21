@@ -98,6 +98,7 @@ function BachKhoa() {
           />
         </div>
       </div>
+      <Typography className='station-name' variant="h6" fontWeight="bold">Bach Khoa Station</Typography>
     </div>
   )
 }

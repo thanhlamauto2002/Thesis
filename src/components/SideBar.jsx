@@ -15,7 +15,7 @@ function SideBar() {
           return (
             <li
               key={key}
-              className='row'
+              className='row-side'
               id={window.location.pathname == val.link ? 'active' : ''}
               onClick={() => handleNavigation(val.link)}>
               <div id='icon'>{val.icon}</div>

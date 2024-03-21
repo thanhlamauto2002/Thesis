@@ -97,6 +97,8 @@ function TraVinh() {
           />
         </div>
       </div>
+      <Typography className='station-name' variant="h6" fontWeight="bold">Tra Vinh Station</Typography>
+
     </div>
   )
 }

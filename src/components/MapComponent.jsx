@@ -1,6 +1,7 @@
 import { GoogleMap, Marker, LoadScript, DirectionsService, DirectionsRenderer, InfoWindow } from '@react-google-maps/api'
 import { useState, useEffect } from 'react'
 import { useJsApiLoader } from '@react-google-maps/api'
+import axios from 'axios'
 
 
 const MapComponent = () => {
@@ -11,14 +12,18 @@ const MapComponent = () => {
   const [currentPosition, setCurrentPosition] = useState(null)
   const [directions, setDirections] = useState(null)
   const [distance, setDistance] = useState(null)// State để lưu trạm được chọn
-
-  const stations = [
-    { name: 'Bach Khoa Station', position: { lat: 10.773267, lng: 106.659466 }, status: 'Normal' },
-    { name: 'Hau Giang Station', position: { lat: 9.779893, lng: 105.492953 }, status: 'Normal' },
-    { name: 'Tra Vinh Station', position: { lat: 9.939664, lng: 106.347450 }, status: 'Normal' }
-  ]
+  const [stations, setStations] = useState([]) // State để lưu trạm từ backend
+  const [selectedStations, setSelectedStations] = useState({})
 
   useEffect(() => {
+    axios.get('http://localhost:8017/v1/liststation/get')
+      .then(response => {
+        setStations(response.data) // Giả sử response.data.stations chứa danh sách các trạm từ backend
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.error('Error fetching stations from backend:', error)
+      })
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
@@ -30,7 +35,7 @@ const MapComponent = () => {
         }
       )
     } else {
-      console.error('Geolocation is not supported by this browser.');
+      console.error('Geolocation is not supported by this browser.')
     }
   }, [])
 
@@ -65,10 +70,9 @@ const MapComponent = () => {
     )
   }
 
-  const [selectedStations, setSelectedStations] = useState({});
 
   const handleMarkerClick = (station) => {
-    const updatedSelectedStations = { ...selectedStations };
+    const updatedSelectedStations = { ...selectedStations }
     updatedSelectedStations[station.name] = station
     setSelectedStations(updatedSelectedStations)
     requestDirections(station.position)
@@ -76,7 +80,7 @@ const MapComponent = () => {
   }
 
   const handleInfoWindowClose = (stationName) => {
-    const updatedSelectedStations = { ...selectedStations };
+    const updatedSelectedStations = { ...selectedStations }
     delete updatedSelectedStations[stationName]
     setSelectedStations(updatedSelectedStations)
     setDirections(null) // Reset directions

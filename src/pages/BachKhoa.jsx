@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 function BachKhoa() {
   return (
     <div className='chart-container'>
-      <div className='row'>
+      <div className='row1'>
         <div className='col'>
           <Typography className='titlte'>SO2</Typography>
           <LineChart className='chart1'
@@ -51,7 +51,7 @@ function BachKhoa() {
           />
         </div>
       </div>
-      <div className='row'>
+      <div className='row2'>
         <div className='col'>
           <Typography className='titlte'>CO</Typography>
           <LineChart className='chart4'

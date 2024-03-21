@@ -271,16 +271,27 @@ body {
 
 .col .title {
   text-align: center;
-  margin-bottom: -40px;
 
 }
 
-.row+.row {
-  margin-top: 40px;
-  /* Thêm margin-top cho hàng thứ hai để tạo khoảng cách giữa chúng */
+.row1 {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.row2 {
+  margin-bottom: 0px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .station-name {
   text-align: center;
+}
 
+p.MuiTypography-root.MuiTypography-body1.titlte.css-ahj2mt-MuiTypography-root {
+  margin-bottom: -32px;
 }

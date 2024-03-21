@@ -5,7 +5,7 @@ import { useJsApiLoader } from '@react-google-maps/api'
 
 const MapComponent = () => {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyBCeUt7t6smlRVSapqySXBx3P8GPudDhVk'
+    googleMapsApiKey: import.meta.env.VITE_MAP_KEY
   })
 
   const [currentPosition, setCurrentPosition] = useState(null)

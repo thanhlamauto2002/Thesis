@@ -19,7 +19,6 @@ const MapComponent = () => {
     axios.get('http://localhost:8017/v1/liststation/get')
       .then(response => {
         setStations(response.data) // Giả sử response.data.stations chứa danh sách các trạm từ backend
-        console.log(response.data)
       })
       .catch(error => {
         console.error('Error fetching stations from backend:', error)

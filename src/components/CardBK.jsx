@@ -2,8 +2,19 @@
 import { Divider } from '@mui/material'
 import { PieChart } from '@mui/x-charts/PieChart'
 
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
 const CardBK = () => {
+  const data = [
+    { name: 'SO2', value: 10 },
+    { name: 'NO2', value: 15 },
+    { name: 'CO2', value: 20 },
+    { name: 'CO', value: 12 },
+    { name: 'NO', value: 23 },
+    { name: 'H2S', value: 24 }
+  ];
+
+  const colors = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#d53e4f', '#5e6472'];
   return (
     <div className="card-station">
       <div className="card-header">
@@ -13,22 +24,20 @@ const CardBK = () => {
       <div className="card-body">
         <div className='row-card'>
           <div id='number'>
-            <PieChart
-              series={[
-                {
-                  data: [
-                    { id: 0, value: 10, label: 'SO2' },
-                    { id: 1, value: 15, label: 'NO2' },
-                    { id: 2, value: 20, label: 'CO2' },
-                    { id: 3, value: 12, label: 'CO' },
-                    { id: 4, value: 23, label: 'NO' },
-                    { id: 5, value: 24, label: 'H2S' }
-                  ]
-                }
-              ]}
+            <BarChart
               width={400}
               height={200}
-            />
+              data={data}
+            >
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" fill="#8884d8" />
+              {data.map((entry, index) => (
+                <Bar key={index} dataKey="value" fill={colors[index]} />
+              ))}
+            </BarChart>
           </div>
           <div id='image'>
             <img

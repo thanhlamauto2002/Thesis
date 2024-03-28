@@ -222,7 +222,34 @@ function App() {
     setAlarms3(updatedAlarms3);
   };
   //
+  const newData = {
+    data1: {
+      SO2: data.data1.SO2,
+      CO2: data.data1.CO2,
+      NO2: data.data1.NO2,
+      CO: data.data1.CO,
+      NO: data.data1.NO,
+      H2S: data.data1.H2S
+    },
+    data2: {
+      SO2: data.data2.SO2,
+      CO2: data.data2.CO2,
+      NO2: data.data2.NO2,
+      CO: data.data2.CO,
+      NO: data.data2.NO,
+      H2S: data.data2.H2S
+    },
+    data3: {
+      SO2: data.data3.SO2,
+      CO2: data.data3.CO2,
+      NO2: data.data3.NO2,
+      CO: data.data3.CO,
+      NO: data.data3.NO,
+      H2S: data.data3.H2S
+    }
+  };
   console.log('thay đổi: ', data)
+  console.log('newdata1: ', newData.data1)
   return (
     <Router>
       <div className='App'>
@@ -238,7 +265,7 @@ function App() {
               <Route path='login' element={<Login1 />} />
               <Route path='alarm' element={<Alarm alarm1={alarms1} onAcknowledgeBK={handleAcknowledgeBK} alarm2={alarms2} onAcknowledgeHG={handleAcknowledgeHG} alarm3={alarms3} onAcknowledgeTV={handleAcknowledgeTV} />} />
               <Route path='report' element={<Report />} />
-              <Route path='dashboard' element={<DashBoard />} />
+              <Route path='dashboard' element={<DashBoard data1={newData.data1} data2={newData.data2} data3={newData.data3} />} />
               <Route path='usersmanage' element={<UserManagement />} />
               <Route path='bachkhoastation' element={<BachKhoa data1={data.data1} />} />
               <Route path='haugiangstation' element={<HauGiang data1={data.data2} />} />

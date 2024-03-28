@@ -1,3 +1,4 @@
+
 import * as React from 'react'
 import Typography from '@mui/material/Typography'
 import { useState, useEffect } from 'react'
@@ -21,7 +22,7 @@ function BachKhoa({ data1 }) {
   const [isDataUpdated, setDataUpdated] = useState(false);
 
   useEffect(() => {
-    console.log('Data changed at BK, re-rendering alarm');
+    console.log('Data changed at BK, re-rendering alarm: ', data1);
   }, [data1]);
 
   useEffect(() => {

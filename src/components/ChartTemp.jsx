@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import Typography from '@mui/material/Typography'
 
 
-const ChartNo = ({ data }) => {
+const ChartTemp = ({ data }) => {
   const setPoint = 50
   const [chartData, setChartData] = useState([]);
   useEffect(() => {
@@ -14,7 +14,7 @@ const ChartNo = ({ data }) => {
 
   return (
     <div className='no-chart'>
-      <Typography variant="h6">NO</Typography> {/* Hiển thị tên của biểu đồ */}
+      <Typography variant="h6">Temperature</Typography> {/* Hiển thị tên của biểu đồ */}
 
       <ResponsiveContainer width="80%" height={300}>
         <LineChart data={chartData}>
@@ -30,4 +30,4 @@ const ChartNo = ({ data }) => {
   );
 }
 
-export default ChartNo
+export default ChartTemp

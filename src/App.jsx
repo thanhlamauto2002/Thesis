@@ -64,9 +64,9 @@ function App() {
       SO2: 50,
       CO2: 100,
       NO2: 200,
-      CO: 150,
-      NO: 180,
-      H2S: 50
+      O2: 150,
+      Temperature: 27,
+      Pressure: 50
     }
     const checkAlarms1 = (data) => {
       const newAlarms = Object.entries(data).map(([key, value]) => {
@@ -84,7 +84,7 @@ function App() {
               }),
               status: 'Alarm',
               area: 'Bach Khoa Station',
-              name: `Khí ${gas} vượt quá mức an toàn`,
+              name: `${gas} vượt quá mức an toàn`,
               value: value,
               acknowledged: false // Thêm trạng thái acknowledged
             };
@@ -121,9 +121,9 @@ function App() {
       SO2: 50,
       CO2: 100,
       NO2: 200,
-      CO: 150,
-      NO: 180,
-      H2S: 50
+      O2: 150,
+      Temperature: 27,
+      Pressure: 50
     }
     const checkAlarms2 = (data) => {
       const newAlarms = Object.entries(data).map(([key, value]) => {
@@ -141,7 +141,7 @@ function App() {
               }),
               status: 'Alarm',
               area: 'Hau Giang Station',
-              name: `Khí ${gas} vượt quá mức an toàn`,
+              name: `${gas} vượt quá mức an toàn`,
               value: value,
               acknowledged: false // Thêm trạng thái acknowledged
             };
@@ -176,9 +176,9 @@ function App() {
       SO2: 50,
       CO2: 100,
       NO2: 200,
-      CO: 150,
-      NO: 180,
-      H2S: 50
+      O2: 150,
+      Temperature: 27,
+      Pressure: 50
     }
     const checkAlarms3 = (data) => {
       const newAlarms = Object.entries(data).map(([key, value]) => {
@@ -196,7 +196,7 @@ function App() {
               }),
               status: 'Alarm',
               area: 'Tra Vinh Station',
-              name: `Khí ${gas} vượt quá mức an toàn`,
+              name: `${gas} vượt quá mức an toàn`,
               value: value,
               acknowledged: false // Thêm trạng thái acknowledged
             };
@@ -227,25 +227,25 @@ function App() {
       SO2: data.data1.SO2,
       CO2: data.data1.CO2,
       NO2: data.data1.NO2,
-      CO: data.data1.CO,
-      NO: data.data1.NO,
-      H2S: data.data1.H2S
+      O2: data.data1.O2,
+      Temperature: data.data1.Temperature,
+      Pressure: data.data1.Pressure
     },
     data2: {
       SO2: data.data2.SO2,
       CO2: data.data2.CO2,
       NO2: data.data2.NO2,
-      CO: data.data2.CO,
-      NO: data.data2.NO,
-      H2S: data.data2.H2S
+      O2: data.data2.O2,
+      Temperature: data.data2.Temperature,
+      Pressure: data.data2.Pressure
     },
     data3: {
       SO2: data.data3.SO2,
       CO2: data.data3.CO2,
       NO2: data.data3.NO2,
-      CO: data.data3.CO,
-      NO: data.data3.NO,
-      H2S: data.data3.H2S
+      O2: data.data3.O2,
+      Temperature: data.data3.Temperature,
+      Pressure: data.data3.Pressure
     }
   };
   console.log('thay đổi: ', data)

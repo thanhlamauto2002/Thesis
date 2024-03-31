@@ -3,7 +3,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import Typography from '@mui/material/Typography'
 
 
-const ChartCo = ({ data }) => {
+const ChartPressure = ({ data }) => {
+  const setPoint = 50
   const [chartData, setChartData] = useState([]);
   useEffect(() => {
     const validData = data.filter(item => typeof item.time !== 'undefined' && typeof item.value !== 'undefined');
@@ -12,8 +13,8 @@ const ChartCo = ({ data }) => {
 
 
   return (
-    <div className='co-chart'>
-      <Typography variant="h6">CO</Typography> {/* Hiển thị tên của biểu đồ */}
+    <div className='h2s-chart'>
+      <Typography variant="h6">Pressure</Typography> {/* Hiển thị tên của biểu đồ */}
 
       <ResponsiveContainer width="80%" height={300}>
         <LineChart data={chartData}>
@@ -29,4 +30,4 @@ const ChartCo = ({ data }) => {
   );
 }
 
-export default ChartCo;
+export default ChartPressure

@@ -5,9 +5,9 @@ import { useState, useEffect } from 'react'
 import ChartSo2 from '~/components/ChartSo2'
 import ChartCo2 from '~/components/ChartCo2'
 import ChartNo2 from '~/components/ChartNo2'
-import ChartCo from '~/components/ChartCo'
-import ChartNo from '~/components/ChartNo'
-import ChartH2s from '~/components/ChartH2s'
+import ChartO2 from '~/components/ChartO2'
+import ChartTemp from '~/components/ChartTemp'
+import ChartPressure from '~/components/ChartPressure'
 import { useNavigate } from 'react-router-dom'
 import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
@@ -29,9 +29,9 @@ function TraVinh({ data1 }) {
           so2: data1.SO2,
           co2: data1.CO2,
           no2: data1.NO2,
-          co: data1.CO,
-          no: data1.NO,
-          h2s: data1.H2S
+          o2: data1.O2,
+          temperature: data1.Temperature,
+          pressure: data1.Pressure
         };
 
         setChartData(prevData => {
@@ -68,9 +68,9 @@ function TraVinh({ data1 }) {
         <div className="chart"><ChartSo2 data={chartData.map(entry => ({ time: entry.time, value: entry.so2 }))} /></div>
         <div className="chart"><ChartCo2 data={chartData.map(entry => ({ time: entry.time, value: entry.co2 }))} /></div>
         <div className="chart"><ChartNo2 data={chartData.map(entry => ({ time: entry.time, value: entry.no2 }))} /></div>
-        <div className="chart"><ChartCo data={chartData.map(entry => ({ time: entry.time, value: entry.co }))} /></div>
-        <div className="chart"><ChartNo data={chartData.map(entry => ({ time: entry.time, value: entry.no }))} /></div>
-        <div className="chart"><ChartH2s data={chartData.map(entry => ({ time: entry.time, value: entry.h2s }))} /></div>
+        <div className="chart"><ChartO2 data={chartData.map(entry => ({ time: entry.time, value: entry.o2 }))} /></div>
+        <div className="chart"><ChartTemp data={chartData.map(entry => ({ time: entry.time, value: entry.temperature }))} /></div>
+        <div className="chart"><ChartPressure data={chartData.map(entry => ({ time: entry.time, value: entry.pressure }))} /></div>
       </div>
     </div>
   );

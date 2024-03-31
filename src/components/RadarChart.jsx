@@ -4,10 +4,10 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Legend }
 const RadarChart1 = ({ data1, data2, data3 }) => {
   // Kết hợp dữ liệu từ 3 set vào một mảng duy nhất
   const chartData = [
-    { subject: 'CO', data1Value: data1.CO, data2Value: data2.CO, data3Value: data3.CO },
+    { subject: 'O2', data1Value: data1.O2, data2Value: data2.O2, data3Value: data3.O2 },
     { subject: 'CO2', data1Value: data1.CO2, data2Value: data2.CO2, data3Value: data3.CO2 },
-    { subject: 'H2S', data1Value: data1.H2S, data2Value: data2.H2S, data3Value: data3.H2S },
-    { subject: 'NO', data1Value: data1.NO, data2Value: data2.NO, data3Value: data3.NO },
+    { subject: 'Pressure', data1Value: data1.Pressure, data2Value: data2.Pressure, data3Value: data3.Pressure },
+    { subject: 'Temperature', data1Value: data1.Temperature, data2Value: data2.Temperature, data3Value: data3.Temperature },
     { subject: 'NO2', data1Value: data1.NO2, data2Value: data2.NO2, data3Value: data3.NO2 },
     { subject: 'SO2', data1Value: data1.SO2, data2Value: data2.SO2, data3Value: data3.SO2 },
   ];
@@ -17,9 +17,9 @@ const RadarChart1 = ({ data1, data2, data3 }) => {
       <PolarGrid />
       <PolarAngleAxis dataKey="subject" />
       <PolarRadiusAxis angle={30} domain={[0, 'auto']} />
-      <Radar name="BK" dataKey="data1Value" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-      <Radar name="HG" dataKey="data2Value" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.4} />
-      <Radar name="TV" dataKey="data3Value" stroke="#ffc658" fill="#ffc658" fillOpacity={0.2} />
+      <Radar name="Bach Khoa Station" dataKey="data1Value" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+      <Radar name="Hau Giang Station" dataKey="data2Value" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.4} />
+      <Radar name="Tra Vinh Station" dataKey="data3Value" stroke="#ffc658" fill="#ffc658" fillOpacity={0.2} />
       <Legend />
     </RadarChart>
   );

@@ -338,9 +338,18 @@ p.MuiTypography-root.MuiTypography-body1.titlte.css-ahj2mt-MuiTypography-root {
 
 }
 
+.AlarmList #active {
+  background-color: #03070b;
+}
+
 .AlarmList .row-alarm:hover {
   cursor: pointer;
   background-color: #293846;
+}
+
+.row-alarm .active {
+  background-color: black;
+  color: #03070b;
 }
 
 .alarmbk-box {
@@ -461,5 +470,139 @@ ul.AlarmList {
 
 thead {
   height: 48px;
+  border: 1px solid black;
+}
+
+.report-bar {
+  display: flex;
+  align-items: center;
+  /* background-color: #2F4050; */
+  border: 2px solid black;
+  /* border-radius: 4px; */
+  height: 48px;
+  text-align: center;
+  justify-content: center;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+
+  background-color: #293846;
+}
+
+.report-container {
+  height: 100%;
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  height: 30px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  width: 300px;
+  text-align: center;
+  border-radius: 5px;
+  border: 2px solid black;
+}
+
+.spacer {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.start-date {
+  margin-left: 10px;
+}
+
+.choose-station {
+  margin-left: 20px;
+  border-radius: 5px;
+  border: 2px solid black;
+}
+
+.choose-option {
+  margin-left: 20px;
+  border-radius: 5px;
+  border: 2px solid black;
+
+}
+
+.submit {
+  margin-left: 20px;
+}
+
+.export {
+  margin-left: 20px;
+}
+
+
+.react-datepicker__input-container input::placeholder {
+  color: black;
+}
+
+.report-main {
+  /* margin-top: 2px; */
+  height: 100%;
+  width: 100%;
+  padding: 0;
+}
+
+.report-table th {
+  background-color: #2F4050;
+  border: 1px solid black;
+  color: white;
+}
+
+.table-report-data {
+  width: 100%;
+}
+
+
+.table-report-alarm {
+  width: 100%;
+}
+
+.table-report-alarm th:nth-child(4),
+.table-report-alarm td:nth-child(4) {
+  width: 40%;
+}
+
+.table-report-data tr {
+  background-color: wheat;
+  text-align: center;
+  height: 40px;
+}
+
+.table-report-data td {
+  text-align: center;
+  height: 40px;
+  border: 2px solid black;
+}
+
+.table-report-data th {
+  text-align: center;
+  border: 2px solid black;
+}
+
+
+.report-bar .submit {
+  background-color: white;
+  margin-left: 20px;
+  color: black;
+  border: 1px solid black;
+  height: 30px;
+}
+
+.report-bar .submit:hover {
+  background-color: darkgray;
+  border: 1px solid black;
+}
+
+.report-bar .export {
+  margin-left: 5px;
+  color: black;
+  border: 1px solid black;
+  height: 30px;
+  background-color: white;
+}
+
+.report-bar .export:hover {
+  background-color: darkgray;
   border: 1px solid black;
 }

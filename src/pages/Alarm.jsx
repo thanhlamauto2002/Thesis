@@ -48,7 +48,6 @@ function Alarm({ alarm1, alarm2, alarm3, onAcknowledgeBK, onAcknowledgeHG, onAck
         </ul>
       </div>
       <div className="alarm-main">
-        {/* <AlarmBK data1={alarm1} ackBK={onAcknowledgeBK} /> */}
         {renderSelectedStation()}
 
       </div>

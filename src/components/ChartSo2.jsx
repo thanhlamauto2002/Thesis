@@ -15,7 +15,7 @@ const ChartSo2 = ({ data }) => {
     <div className='so2-chart'>
       <Typography variant="h6">SO2</Typography> {/* Hiển thị tên của biểu đồ */}
 
-      <ResponsiveContainer width="80%" height={300}>
+      <ResponsiveContainer width="80%" height={250}>
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="time" />

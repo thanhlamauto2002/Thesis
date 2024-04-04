@@ -106,3 +106,7 @@ button:disabled {
 .register-link p a:hover {
   text-decoration: underline;
 }
+
+input[type="password"] {
+  text-align: center;
+}

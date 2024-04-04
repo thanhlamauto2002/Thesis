@@ -16,7 +16,7 @@ const ChartNo2 = ({ data }) => {
     <div className='no2-chart'>
       <Typography variant="h6">NO2</Typography> {/* Hiển thị tên của biểu đồ */}
 
-      <ResponsiveContainer width="80%" height={300}>
+      <ResponsiveContainer width="80%" height={250}>
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="time" />

@@ -106,10 +106,12 @@ const Report = () => {
           onChange={handleChangeStation}
           style={{
             width: '168px',
-            height: '29px', // Giống kích thước của DatePicker
+            height: '39px', // Giống kích thước của DatePicker
             backgroundColor: 'white', // Màu nền
             color: 'black', // Màu chữ
             border: '1px solid black', // Đường viền
+            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+            fontSize: '15px'
           }}
         >
           <option value="BK">Bach Khoa Station</option>
@@ -122,11 +124,12 @@ const Report = () => {
           onChange={handleChangeOption}
           style={{
             width: '168px',
-            height: '29px', // Giống kích thước của DatePicker
+            height: '39px', // Giống kích thước của DatePicker
             backgroundColor: 'white', // Màu nền
             color: 'black', // Màu chữ
             border: '1px solid black', // Đường viền
-            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
+            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+            fontSize: '15px'
           }}
         >
           <option value="data">Data</option>

@@ -13,7 +13,7 @@ const RadarChart1 = ({ data1, data2, data3 }) => {
   ];
 
   return (
-    <RadarChart width={1000} height={600} data={chartData}>
+    <RadarChart width={900} height={600} data={chartData}>
       <PolarGrid />
       <PolarAngleAxis dataKey="subject" />
       <PolarRadiusAxis angle={30} domain={[0, 'auto']} />

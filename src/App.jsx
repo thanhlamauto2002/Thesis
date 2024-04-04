@@ -2,7 +2,7 @@
 import Container from '@mui/material/Container'
 import NavBar from '~/components/NavBar/NavBar'
 import './App.css'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 // import socketIOClient from 'socket.io-client'
 import SideBar from './components/SideBar'
 // import AppRoute from './routes/AppRoute'
@@ -21,8 +21,8 @@ import TraVinh from '~/pages/TraVinh'
 import Alarm from '~/pages/Alarm'
 import Report from '~/pages/report'
 import DashBoard from '~/pages/DashBoard'
-import UserManagement from '~/pages/UserManagement'
-
+import User from '~/pages/User'
+import Metric from '~/pages/Metric'
 // import socket from './socket'
 import io from 'socket.io-client'
 function App() {
@@ -53,7 +53,92 @@ function App() {
     };
 
   }, []);
+  /*xử lý chart real time */
+  //chartBK
+  const [chartBK, setChartBK] = useState(() => {
+    const storedDataBK = localStorage.getItem('chartBK');
+    return storedDataBK ? JSON.parse(storedDataBK) : [];
+  });
+  useEffect(() => {
+    const updateChartData = () => {
+      if (data.data1 && data.data1.createdAt && !isNaN(new Date(data.data1.createdAt))) {
+        const newDataPoint = {
+          time: new Date(data.data1.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+          so2: data.data1.SO2,
+          co2: data.data1.CO2,
+          no2: data.data1.NO2,
+          o2: data.data1.O2,
+          temperature: data.data1.Temperature,
+          pressure: data.data1.Pressure
+        };
 
+        setChartBK(prevData => {
+          const updatedData = [...prevData, newDataPoint];
+          localStorage.setItem('chartBK', JSON.stringify(updatedData));
+          return updatedData;
+        });
+      }
+    };
+    updateChartData()
+
+  }, [data.data1]);
+  // chart HG
+  const [chartHG, setChartHG] = useState(() => {
+    const storedDataHG = localStorage.getItem('chartHG');
+    return storedDataHG ? JSON.parse(storedDataHG) : [];
+  });
+  useEffect(() => {
+    const updateChartData = () => {
+      if (data.data2 && data.data2.createdAt && !isNaN(new Date(data.data2.createdAt))) {
+        const newDataPoint = {
+          time: new Date(data.data2.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+          so2: data.data2.SO2,
+          co2: data.data2.CO2,
+          no2: data.data2.NO2,
+          o2: data.data2.O2,
+          temperature: data.data2.Temperature,
+          pressure: data.data2.Pressure
+        };
+
+        setChartHG(prevData => {
+          const updatedData = [...prevData, newDataPoint];
+          localStorage.setItem('chartHG', JSON.stringify(updatedData));
+          return updatedData;
+        });
+      }
+    };
+    updateChartData()
+
+  }, [data.data2]);
+  // chart TV
+  const [chartTV, setChartTV] = useState(() => {
+    const storedDataTV = localStorage.getItem('chartTV');
+    return storedDataTV ? JSON.parse(storedDataTV) : [];
+  });
+  useEffect(() => {
+    const updateChartData = () => {
+      if (data.data3 && data.data3.createdAt && !isNaN(new Date(data.data3.createdAt))) {
+        const newDataPoint = {
+          time: new Date(data.data3.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+          so2: data.data3.SO2,
+          co2: data.data3.CO2,
+          no2: data.data3.NO2,
+          o2: data.data3.O2,
+          temperature: data.data3.Temperature,
+          pressure: data.data3.Pressure
+        };
+
+        setChartTV(prevData => {
+          const updatedData = [...prevData, newDataPoint];
+          localStorage.setItem('chartHG', JSON.stringify(updatedData));
+          return updatedData;
+        });
+      }
+    };
+    updateChartData()
+
+  }, [data.data3]);
+  /* Xử lý alarm real time */
   // xử lý alarm BK
   const [alarms1, setAlarms1] = useState(() => {
     const storedAlarms = localStorage.getItem('alarms1');
@@ -248,8 +333,6 @@ function App() {
       Pressure: data.data3.Pressure
     }
   };
-  console.log('thay đổi: ', data)
-  console.log('newdata1: ', newData.data1)
   return (
     <Router>
       <div className='App'>
@@ -266,7 +349,8 @@ function App() {
               <Route path='alarm' element={<Alarm alarm1={alarms1} onAcknowledgeBK={handleAcknowledgeBK} alarm2={alarms2} onAcknowledgeHG={handleAcknowledgeHG} alarm3={alarms3} onAcknowledgeTV={handleAcknowledgeTV} />} />
               <Route path='report' element={<Report />} />
               <Route path='dashboard' element={<DashBoard data1={newData.data1} data2={newData.data2} data3={newData.data3} />} />
-              <Route path='usersmanage' element={<UserManagement />} />
+              <Route path='userauthencation' element={<User />} />
+              <Route path='metric' element={<Metric data1={chartBK} data2={chartHG} data3={chartTV} />} />
               <Route path='bachkhoastation' element={<BachKhoa data1={data.data1} />} />
               <Route path='haugiangstation' element={<HauGiang data1={data.data2} />} />
               <Route path='travinhstation' element={<TraVinh data1={data.data3} />} />

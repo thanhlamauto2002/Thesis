@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
+import Cookies from 'js-cookie';
 
 const Login1 = () => {
   const [email, setEmail] = useState('')
@@ -23,14 +24,21 @@ const Login1 = () => {
     )
       .then(response => {
         if (response.data.success) {
-          navigate('/stations')
+          navigate('/')
           toast.success('Login Successfully', { draggable: false })
           console.log(response.data.message)
+          Cookies.set('jwt', response.data.accessToken, { expires: 7 }); // Lưu JWT vào cookie với tên 'jwt', có thể đặt thời gian sống của cookie (tùy chọn)
+
+        }
+        else {
+          console.log(response.data.message)
+          toast.error('Email or password is incorrect', { draggable: false })
+
+
         }
       })
       .catch(error => {
         console.error('Error:', error)
-        toast.error('Email or password is incorrect', { draggable: false })
         setEmail('')
         setPassword('')
       })

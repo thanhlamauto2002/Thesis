@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography'
 
 
 const ChartCo2 = ({ data }) => {
-  const setPoint = 50
   const [chartData, setChartData] = useState([]);
   useEffect(() => {
     const validData = data.filter(item => typeof item.time !== 'undefined' && typeof item.value !== 'undefined');
@@ -16,7 +15,7 @@ const ChartCo2 = ({ data }) => {
     <div className='co2-chart'>
       <Typography variant="h6">CO2</Typography> {/* Hiển thị tên của biểu đồ */}
 
-      <ResponsiveContainer width="80%" height={300}>
+      <ResponsiveContainer width="80%" height={250}>
         <LineChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="time" />

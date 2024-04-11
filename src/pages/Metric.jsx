@@ -115,7 +115,7 @@ function Metric({ data1, data2, data3 }) {
         </div>
       </div>
       <div className='metric-title'>
-        <span>{selectedStation === 'bk' ? 'Bach Khoa Station' : ''}
+        <span className='title-station-span'>{selectedStation === 'bk' ? 'Bach Khoa Station' : ''}
           {selectedStation === 'hg' ? 'Hau Giang Station' : ''}
           {selectedStation === 'tv' ? 'Tra Vinh Station' : ''}</span>
       </div>

@@ -15,11 +15,10 @@ function ChartComponent({ data1 }) {
   //   return storedData ? JSON.parse(storedData) : [];
   // });
   const [chartData, setChartData] = useState([])
-  console.log('vvvv: ', data1)
   useEffect(() => {
     const updateChartData = () => {
       // Kiểm tra nếu `data1` là một mảng và có ít nhất một phần tử
-      if (Array.isArray(data1) && data1.length > 0) {
+      if (Array.isArray(data1) && data1.length >= 0) {
         const updatedData = data1.map(data => {
           // Kiểm tra tính hợp lệ của dữ liệu
           if (data && data.createdAt && !isNaN(new Date(data.createdAt))) {

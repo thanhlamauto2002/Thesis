@@ -1,15 +1,8 @@
 
 import { Divider } from '@mui/material'
-
-const CardBK = () => {
-  const data = [
-    { name: 'SO2', value: 10 },
-    { name: 'NO2', value: 15 },
-    { name: 'CO2', value: 20 },
-    { name: 'CO', value: 12 },
-    { name: 'NO', value: 23 },
-    { name: 'H2S', value: 24 }
-  ];
+import TempGauge from '~/components/TempGauge'
+import PressComponent from './PressComponent';
+const CardBK = ({ temp, press }) => {
 
   return (
     <div className="card-station">
@@ -18,19 +11,10 @@ const CardBK = () => {
       </div>
       <Divider />
       <div className="card-body">
-        <div className='row-card'>
-          <div id='number'>
+        < TempGauge Temp={temp} />
+        < PressComponent Press={press} />
 
-          </div>
-          <div id='image'>
-            <img
-              alt="Plants"
-              height="70"
-              width="80"
-              src="https://cdn.fogwing.net/sfactory/images/plant.svg"
-            />
-          </div>
-        </div>
+
       </div>
     </div>
   )

@@ -12,19 +12,13 @@ function DashBoard({ data1, data2, data3 }) {
       </div>
       <div className='dashboard-cards'>
         <div className='dashboard-card dashboard-card2'>
-          <Link to="/bachkhoastation" className="dashboard-card-link">
-            <CardBK />
-          </Link>
+          <CardBK temp={data1.Temperature} press={data1.Pressure} />
         </div>
         <div className='dashboard-card dashboard-card3'>
-          <Link to="/haugiangstation" className="dashboard-card-link">
-            <CardHG />
-          </Link>
+          <CardHG temp={data2.Temperature} press={data2.Pressure} />
         </div>
         <div className='dashboard-card dashboard-card4'>
-          <Link to="/travinhstation" className="dashboard-card-link">
-            <CardTV />
-          </Link>
+          <CardTV temp={data3.Temperature} press={data3.Pressure} />
         </div>
       </div>
     </div>

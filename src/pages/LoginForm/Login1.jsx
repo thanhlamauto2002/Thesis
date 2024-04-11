@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
 import Cookies from 'js-cookie';
 
-const Login1 = () => {
+const Login1 = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate() // Sử dụng history để điều hướng
@@ -27,8 +27,7 @@ const Login1 = () => {
           navigate('/')
           toast.success('Login Successfully', { draggable: false })
           console.log(response.data.message)
-          Cookies.set('jwt', response.data.accessToken, { expires: 7 }); // Lưu JWT vào cookie với tên 'jwt', có thể đặt thời gian sống của cookie (tùy chọn)
-
+          onLoginSuccess(response.data.accessToken)
         }
         else {
           console.log(response.data.message)
@@ -71,9 +70,7 @@ const Login1 = () => {
             className={email && password ? 'active' : ''}
             disabled={email && password ? false : true}
           >Login</button>
-          <div className='register-link'>
-            <p> Don't have an account? <a href='#'>Register</a></p>
-          </div>
+
         </form>
       </div>
     </div>

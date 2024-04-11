@@ -15,16 +15,16 @@ import {
 import Map from '~/pages/Map1'
 import Login1 from '~/pages/LoginForm/Login1'
 import Home from '~/pages/Home1'
-import BachKhoa from '~/pages/BachKhoa'
-import HauGiang from '~/pages/HauGiang'
-import TraVinh from '~/pages/TraVinh'
 import Alarm from '~/pages/Alarm'
 import Report from '~/pages/report'
 import DashBoard from '~/pages/DashBoard'
 import User from '~/pages/User'
 import Metric from '~/pages/Metric'
-// import socket from './socket'
+import Cookies from 'js-cookie';
 import io from 'socket.io-client'
+import PrivateRoute from './routes/PrivateRoute'
+import axios from 'axios'
+
 function App() {
   const [data, setData] = useState({ data1: [], data2: [], data3: [] });
   useEffect(() => {
@@ -41,7 +41,7 @@ function App() {
 
     const interval = setInterval(() => {
       socket.emit('requestData');
-    }, 10000);
+    }, 1000);
 
     socket.on('data', (data) => {
       setData(data);
@@ -55,88 +55,104 @@ function App() {
   }, []);
   /*xử lý chart real time */
   //chartBK
+  const [previousData1, setPreviousData1] = useState(null);
   const [chartBK, setChartBK] = useState(() => {
-    const storedDataBK = localStorage.getItem('chartBK');
+    const storedDataBK = localStorage.getItem('chartRealTimetBK');
     return storedDataBK ? JSON.parse(storedDataBK) : [];
   });
   useEffect(() => {
-    const updateChartData = () => {
-      if (data.data1 && data.data1.createdAt && !isNaN(new Date(data.data1.createdAt))) {
-        const newDataPoint = {
-          time: new Date(data.data1.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-          so2: data.data1.SO2,
-          co2: data.data1.CO2,
-          no2: data.data1.NO2,
-          o2: data.data1.O2,
-          temperature: data.data1.Temperature,
-          pressure: data.data1.Pressure
-        };
+    if (JSON.stringify(data.data1) !== JSON.stringify(previousData1)) {
+      // Cập nhật previousData1 với giá trị mới của data.data1
+      setPreviousData1(data.data1);
+      const updateChartData = () => {
+        if (data.data1 && data.data1.createdAt && !isNaN(new Date(data.data1.createdAt))) {
+          const newDataPoint = {
+            time: new Date(data.data1.createdAt).toLocaleTimeString([], {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit', hour: '2-digit', minute: '2-digit'
+            }),
+            so2: data.data1.SO2,
+            co2: data.data1.CO2,
+            no2: data.data1.NO2,
+            o2: data.data1.O2,
+            temperature: data.data1.Temperature,
+            pressure: data.data1.Pressure
+          };
 
-        setChartBK(prevData => {
-          const updatedData = [...prevData, newDataPoint];
-          localStorage.setItem('chartBK', JSON.stringify(updatedData));
-          return updatedData;
-        });
-      }
-    };
-    updateChartData()
-
+          setChartBK(prevData => {
+            const updatedData = [...prevData, newDataPoint];
+            localStorage.setItem('chartRealTimetBK', JSON.stringify(updatedData));
+            return updatedData;
+          });
+        }
+      };
+      updateChartData()
+    }
   }, [data.data1]);
   // chart HG
+  const [previousData2, setPreviousData2] = useState(null);
   const [chartHG, setChartHG] = useState(() => {
-    const storedDataHG = localStorage.getItem('chartHG');
+    const storedDataHG = localStorage.getItem('chartRealTimeHG');
     return storedDataHG ? JSON.parse(storedDataHG) : [];
   });
   useEffect(() => {
-    const updateChartData = () => {
-      if (data.data2 && data.data2.createdAt && !isNaN(new Date(data.data2.createdAt))) {
-        const newDataPoint = {
-          time: new Date(data.data2.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-          so2: data.data2.SO2,
-          co2: data.data2.CO2,
-          no2: data.data2.NO2,
-          o2: data.data2.O2,
-          temperature: data.data2.Temperature,
-          pressure: data.data2.Pressure
-        };
+    if (JSON.stringify(data.data2) !== JSON.stringify(previousData2)) {
+      // Cập nhật previousData1 với giá trị mới của data.data1
+      setPreviousData2(data.data2);
+      const updateChartData = () => {
+        if (data.data2 && data.data2.createdAt && !isNaN(new Date(data.data2.createdAt))) {
+          const newDataPoint = {
+            time: new Date(data.data2.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+            so2: data.data2.SO2,
+            co2: data.data2.CO2,
+            no2: data.data2.NO2,
+            o2: data.data2.O2,
+            temperature: data.data2.Temperature,
+            pressure: data.data2.Pressure
+          };
 
-        setChartHG(prevData => {
-          const updatedData = [...prevData, newDataPoint];
-          localStorage.setItem('chartHG', JSON.stringify(updatedData));
-          return updatedData;
-        });
-      }
-    };
-    updateChartData()
-
+          setChartHG(prevData => {
+            const updatedData = [...prevData, newDataPoint];
+            localStorage.setItem('chartRealTimeHG', JSON.stringify(updatedData));
+            return updatedData;
+          });
+        }
+      };
+      updateChartData()
+    }
   }, [data.data2]);
   // chart TV
+  const [previousData3, setPreviousData3] = useState(null);
   const [chartTV, setChartTV] = useState(() => {
-    const storedDataTV = localStorage.getItem('chartTV');
+    const storedDataTV = localStorage.getItem('chartRealTimeTV');
     return storedDataTV ? JSON.parse(storedDataTV) : [];
   });
   useEffect(() => {
-    const updateChartData = () => {
-      if (data.data3 && data.data3.createdAt && !isNaN(new Date(data.data3.createdAt))) {
-        const newDataPoint = {
-          time: new Date(data.data3.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-          so2: data.data3.SO2,
-          co2: data.data3.CO2,
-          no2: data.data3.NO2,
-          o2: data.data3.O2,
-          temperature: data.data3.Temperature,
-          pressure: data.data3.Pressure
-        };
+    if (JSON.stringify(data.data3) !== JSON.stringify(previousData3)) {
+      // Cập nhật previousData1 với giá trị mới của data.data1
+      setPreviousData3(data.data3);
+      const updateChartData = () => {
+        if (data.data3 && data.data3.createdAt && !isNaN(new Date(data.data3.createdAt))) {
+          const newDataPoint = {
+            time: new Date(data.data3.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+            so2: data.data3.SO2,
+            co2: data.data3.CO2,
+            no2: data.data3.NO2,
+            o2: data.data3.O2,
+            temperature: data.data3.Temperature,
+            pressure: data.data3.Pressure
+          };
 
-        setChartTV(prevData => {
-          const updatedData = [...prevData, newDataPoint];
-          localStorage.setItem('chartHG', JSON.stringify(updatedData));
-          return updatedData;
-        });
-      }
-    };
-    updateChartData()
-
+          setChartTV(prevData => {
+            const updatedData = [...prevData, newDataPoint];
+            localStorage.setItem('chartRealTimeTV', JSON.stringify(updatedData));
+            return updatedData;
+          });
+        }
+      };
+      updateChartData()
+    }
   }, [data.data3]);
   /* Xử lý alarm real time */
   // xử lý alarm BK
@@ -150,8 +166,8 @@ function App() {
       CO2: 100,
       NO2: 200,
       O2: 150,
-      Temperature: 27,
-      Pressure: 50
+      Temperature: 100,
+      Pressure: 500
     }
     const checkAlarms1 = (data) => {
       const newAlarms = Object.entries(data).map(([key, value]) => {
@@ -181,7 +197,6 @@ function App() {
       // Kiểm tra xem dữ liệu mới có khác với dữ liệu hiện tại không
       // if (JSON.stringify(newAlarms) !== JSON.stringify(alarms1)) {
       setAlarms1(prevAlarms => [...newAlarms, ...prevAlarms]);
-      console.log('new: ', newAlarms)
       // }
     };
 
@@ -207,8 +222,8 @@ function App() {
       CO2: 100,
       NO2: 200,
       O2: 150,
-      Temperature: 27,
-      Pressure: 50
+      Temperature: 100,
+      Pressure: 500
     }
     const checkAlarms2 = (data) => {
       const newAlarms = Object.entries(data).map(([key, value]) => {
@@ -262,8 +277,8 @@ function App() {
       CO2: 100,
       NO2: 200,
       O2: 150,
-      Temperature: 27,
-      Pressure: 50
+      Temperature: 100,
+      Pressure: 500
     }
     const checkAlarms3 = (data) => {
       const newAlarms = Object.entries(data).map(([key, value]) => {
@@ -333,27 +348,58 @@ function App() {
       Pressure: data.data3.Pressure
     }
   };
+  const [token, setToken] = useState(Cookies.get('jwt') || null);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!token);
+  const [userName, setUserName] = useState('')
+  const handleLoginSuccess = (accessToken) => {
+    Cookies.set('jwt', accessToken, { expires: 7 });
+    setToken(accessToken);
+    setIsLoggedIn(true);
+  };
+  const handleLogout = () => {
+    Cookies.remove('jwt');
+    setToken(null);
+    setIsLoggedIn(false);
+  };
+  useEffect(() => {
+    // Kiểm tra xem người dùng đã đăng nhập chưa (ví dụ: kiểm tra cookie)
+    if (token) {
+      setIsLoggedIn(true);
+      const response = axios.post('http://localhost:8017/v1/users/verifytoken', {
+        token
+      })
+        .then(response => {
+          // Handle response from the backend
+          setUserName(response.data.username)
+        })
+    } else {
+      setIsLoggedIn(false); // Nếu không có token, đánh dấu là chưa đăng nhập
+    }
+  }, [token])
+
+
   return (
     <Router>
       <div className='App'>
         <div className='app-bar'>
-          <NavBar />
+          <NavBar isLogged={isLoggedIn} onRemoveLogin={handleLogout} userRole={'Admin'} userName={userName} />
         </div>
         <div className='side-bar'>
           <SideBar />
           <div className='main-content'>
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='maps' element={<Map />} />
-              <Route path='login' element={<Login1 />} />
-              <Route path='alarm' element={<Alarm alarm1={alarms1} onAcknowledgeBK={handleAcknowledgeBK} alarm2={alarms2} onAcknowledgeHG={handleAcknowledgeHG} alarm3={alarms3} onAcknowledgeTV={handleAcknowledgeTV} />} />
-              <Route path='report' element={<Report />} />
+              <Route path='maps' element={<PrivateRoute><Map /></PrivateRoute>} />
+              <Route path='login' element={<Login1 onLoginSuccess={handleLoginSuccess} />} />
+              <Route path='alarm' element={<PrivateRoute><Alarm
+                alarm1={alarms1} onAcknowledgeBK={handleAcknowledgeBK}
+                alarm2={alarms2} onAcknowledgeHG={handleAcknowledgeHG}
+                alarm3={alarms3} onAcknowledgeTV={handleAcknowledgeTV} />
+              </PrivateRoute>} />
+              <Route path='report' element={<PrivateRoute><Report username={userName} /></PrivateRoute>} />
               <Route path='dashboard' element={<DashBoard data1={newData.data1} data2={newData.data2} data3={newData.data3} />} />
-              <Route path='userauthencation' element={<User />} />
-              <Route path='metric' element={<Metric data1={chartBK} data2={chartHG} data3={chartTV} />} />
-              <Route path='bachkhoastation' element={<BachKhoa data1={data.data1} />} />
-              <Route path='haugiangstation' element={<HauGiang data1={data.data2} />} />
-              <Route path='travinhstation' element={<TraVinh data1={data.data3} />} />
+              <Route path='userauthencation' element={<PrivateRoute><User /></PrivateRoute>} />
+              <Route path='metric' element={<PrivateRoute><Metric data1={chartBK} data2={chartHG} data3={chartTV} /></PrivateRoute>} />
             </Routes>
           </div>
         </div>

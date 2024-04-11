@@ -6,8 +6,7 @@ import Reportdata from '~/components/ReportData'
 import ReportAlarm from '~/components/ReportAlarm'
 import axios from 'axios';
 import * as XLSX from 'xlsx';
-
-const Report = () => {
+const Report = ({ username }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [selectedStation, setSelectedStation] = useState('BK');
@@ -51,8 +50,9 @@ const Report = () => {
     setSelectedOption(event.target.value); // Cập nhật giá trị đã chọn khi người dùng thay đổi
   };
 
+  const currentDate = new Date();
 
-  const handleExport = () => {
+  const handleExport = async () => {
     // Xử lý khi người dùng nhấn Export
     if (reportData.length === 0) {
       console.error('No data to export.');
@@ -68,19 +68,31 @@ const Report = () => {
       Temperature: item.Temperature,
       Pressure: item.Pressure,
       Station: item.Station,
-      Date: new Date(item.createdAt).toLocaleString('en-GB')
+      UserName: username,
+      Date: new Date(item.createdAt).toLocaleString('en-GB'),
+      StartDate: startDate.toLocaleString('en-GB'), // Thêm startDate vào dữ liệu export
+      EndDate: endDate.toLocaleString('en-GB'),     // Thêm endDate vào dữ liệu export
+      CurrentTime: currentDate.toLocaleString('en-GB')
+
     }));
 
-    // Tạo một workbook mới và một worksheet
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    try {
+      // Gửi dữ liệu dataToExport lên backend
+      const response = await axios.post('http://localhost:8017/v1/export', {
+        dataToExport: dataToExport
+      });
+      const downloadUrl = response.data.downloadUrl;
+      window.location.href = downloadUrl;
 
-    // Thêm worksheet vào workbook
-    XLSX.utils.book_append_sheet(wb, ws, 'Report Data');
-
-    // Xuất workbook ra file Excel và tải về
-    XLSX.writeFile(wb, 'report_data.xlsx');
+      console.log('Export request successful:', response.data);
+      // Xử lý kết quả trả về từ backend (nếu cần)
+    } catch (error) {
+      console.error('Export request failed:', error);
+      // Xử lý lỗi khi gửi yêu cầu xuất Excel lên backend
+    }
   };
+
+
   return (
     <div className='report-container'>
       <div className='report-bar'>
@@ -92,7 +104,7 @@ const Report = () => {
           placeholderText="Start date"
           placeholderTextColor="black"
         />
-        <span className="spacer" style={{ color: 'white', fontSize: '20px' }}>-</span>
+        <span className="spacer" style={{ color: 'white', fontSize: '20px', border: 'none' }}>-</span>
         <DatePicker
           className='end-date'
           selected={endDate}
@@ -143,10 +155,12 @@ const Report = () => {
         </Button>
       </div>
       <div className='report-main'>
-        <div className='report-table'>
-          {selectedOption === 'data' && <Reportdata reportData={reportData} />}
-        </div>
+        <div className="scrollable-table">
 
+          <div className='report-table'>
+            {selectedOption === 'data' && <Reportdata reportData={reportData} />}
+          </div>
+        </div>
       </div>
     </div>
   )

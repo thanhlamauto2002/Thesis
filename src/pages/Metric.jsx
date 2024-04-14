@@ -13,14 +13,12 @@ function Metric({ data1, data2, data3 }) {
   const [selectedOption, setSelectedOption] = useState('current');
   const [option, setOption] = useState('today');
   const [chartData, setChartData] = useState(null)
-  console.log('dataChart: ', chartData)
 
   useEffect(() => {
     const getData = () => {
       axios.get(`http://localhost:8017/v1/getdatachart?station=${selectedStation}&option=${option}`)
         .then(response => {
           setChartData(response.data);
-          console.log('res data: ', response.data)
         })
         .catch(error => {
           console.error('Error fetching report data:', error);

@@ -31,7 +31,7 @@ export const SidebarData = [
     link: '/alarm'
   },
   {
-    title: 'Metrics',
+    title: 'Trends',
     icon: < SsidChartOutlinedIcon />,
     link: '/metric'
   },

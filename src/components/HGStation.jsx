@@ -14,11 +14,11 @@ function HauGiangComp({ data1 }) {
     <div className='chart-container'>
       <div className="grid-container">
         <div className="chart"><ChartSo2 data={data1.map(entry => ({ time: entry.time, value: entry.so2 }))} /></div>
-        <div className="chart"><ChartCo2 data={data1.map(entry => ({ time: entry.time, value: entry.co2 }))} /></div>
-        <div className="chart"><ChartNo2 data={data1.map(entry => ({ time: entry.time, value: entry.no2 }))} /></div>
+        <div className="chart"><ChartCo2 data={data1.map(entry => ({ time: entry.time, value: entry.co }))} /></div>
+        <div className="chart"><ChartNo2 data={data1.map(entry => ({ time: entry.time, value: entry.no }))} /></div>
         <div className="chart"><ChartO2 data={data1.map(entry => ({ time: entry.time, value: entry.o2 }))} /></div>
         <div className="chart"><ChartTemp data={data1.map(entry => ({ time: entry.time, value: entry.temperature }))} /></div>
-        <div className="chart"><ChartPressure data={data1.map(entry => ({ time: entry.time, value: entry.pressure }))} /></div>
+        <div className="chart"><ChartPressure data={data1.map(entry => ({ time: entry.time, value: entry.dust }))} /></div>
       </div>
     </div>
   );

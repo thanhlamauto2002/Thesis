@@ -1,4 +1,5 @@
 
+
 import Container from '@mui/material/Container'
 import NavBar from '~/components/NavBar/NavBar'
 import './App.css'
@@ -26,6 +27,8 @@ import PrivateRoute from './routes/PrivateRoute'
 import axios from 'axios'
 
 function App() {
+
+
   const [data, setData] = useState({ data1: [], data2: [], data3: [] });
   useEffect(() => {
     const socket = io('http://localhost:8017/');
@@ -55,39 +58,65 @@ function App() {
   }, []);
   /*xử lý chart real time */
   //chartBK
-  const [previousData1, setPreviousData1] = useState(null);
+  const [previousData1, setPreviousData1] = useState(() => {
+    const storedData1 = localStorage.getItem('preData1');
+    return storedData1 ? JSON.parse(storedData1) : [];
+  });
   const [chartBK, setChartBK] = useState(() => {
-    const storedDataBK = localStorage.getItem('chartRealTimetBK');
+    const storedDataBK = localStorage.getItem('chartRealTimeBK');
     return storedDataBK ? JSON.parse(storedDataBK) : [];
   });
-  useEffect(() => {
-    if (JSON.stringify(data.data1) !== JSON.stringify(previousData1)) {
-      // Cập nhật previousData1 với giá trị mới của data.data1
-      setPreviousData1(data.data1);
-      const updateChartData = () => {
-        if (data.data1 && data.data1.createdAt && !isNaN(new Date(data.data1.createdAt))) {
-          const newDataPoint = {
-            time: new Date(data.data1.createdAt).toLocaleTimeString([], {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit', hour: '2-digit', minute: '2-digit'
-            }),
-            so2: data.data1.SO2,
-            co2: data.data1.CO2,
-            no2: data.data1.NO2,
-            o2: data.data1.O2,
-            temperature: data.data1.Temperature,
-            pressure: data.data1.Pressure
-          };
 
-          setChartBK(prevData => {
-            const updatedData = [...prevData, newDataPoint];
-            localStorage.setItem('chartRealTimetBK', JSON.stringify(updatedData));
-            return updatedData;
-          });
-        }
-      };
-      updateChartData()
+  useEffect(() => {
+    if (data.data1.length !== 0) {
+      if (JSON.stringify(data.data1) !== JSON.stringify(previousData1)) {
+        console.log('dk2: ', JSON.stringify(data.data1) !== JSON.stringify(previousData1))
+        console.log('pre2: ', previousData1)
+        console.log('bk2: ', data.data1)
+        setPreviousData1(data.data1);
+        const updateChartData = () => {
+          if (data.data1 && data.data1.createdAt && !isNaN(new Date(data.data1.createdAt))) {
+            const newDataPoint = {
+              time: new Date(data.data1.createdAt).toLocaleTimeString([], {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit', hour: '2-digit', minute: '2-digit'
+              }),
+              so2: data.data1.SO2,
+              co: data.data1.CO,
+              no: data.data1.NO,
+              o2: data.data1.O2,
+              temperature: data.data1.Temperature,
+              dust: data.data1.Dust
+            };
+
+            setChartBK(prevData => {
+              // Kiểm tra xem newDataPoint có tồn tại trong prevData chưa
+              const exists = prevData.some(item => (
+                item.time === newDataPoint.time &&
+                item.so2 === newDataPoint.so2 &&
+                item.co === newDataPoint.co &&
+                item.no === newDataPoint.no &&
+                item.o2 === newDataPoint.o2 &&
+                item.temperature === newDataPoint.temperature &&
+                item.dust === newDataPoint.dust
+              ));
+
+              if (!exists) {
+                // Nếu newDataPoint là duy nhất, thêm vào prevData và cập nhật localStorage
+                const updatedData = [...prevData, newDataPoint];
+                localStorage.setItem('chartRealTimeBK', JSON.stringify(updatedData));
+                return updatedData;
+              }
+
+              // Nếu newDataPoint đã tồn tại, không cập nhật prevData
+              return prevData;
+            });
+          }
+        };
+
+        updateChartData();
+      }
     }
   }, [data.data1]);
   // chart HG
@@ -98,24 +127,40 @@ function App() {
   });
   useEffect(() => {
     if (JSON.stringify(data.data2) !== JSON.stringify(previousData2)) {
-      // Cập nhật previousData1 với giá trị mới của data.data1
       setPreviousData2(data.data2);
       const updateChartData = () => {
         if (data.data2 && data.data2.createdAt && !isNaN(new Date(data.data2.createdAt))) {
           const newDataPoint = {
             time: new Date(data.data2.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
             so2: data.data2.SO2,
-            co2: data.data2.CO2,
-            no2: data.data2.NO2,
+            co: data.data2.CO,
+            no: data.data2.NO,
             o2: data.data2.O2,
             temperature: data.data2.Temperature,
-            pressure: data.data2.Pressure
+            dust: data.data2.Dust
           };
 
           setChartHG(prevData => {
-            const updatedData = [...prevData, newDataPoint];
-            localStorage.setItem('chartRealTimeHG', JSON.stringify(updatedData));
-            return updatedData;
+            // Kiểm tra xem newDataPoint có tồn tại trong prevData chưa
+            const exists = prevData.some(item => (
+              item.time === newDataPoint.time &&
+              item.so2 === newDataPoint.so2 &&
+              item.co === newDataPoint.co &&
+              item.no === newDataPoint.no &&
+              item.o2 === newDataPoint.o2 &&
+              item.temperature === newDataPoint.temperature &&
+              item.dust === newDataPoint.dust
+            ));
+
+            if (!exists) {
+              // Nếu newDataPoint là duy nhất, thêm vào prevData và cập nhật localStorage
+              const updatedData = [...prevData, newDataPoint];
+              localStorage.setItem('chartRealTimeHG', JSON.stringify(updatedData));
+              return updatedData;
+            }
+
+            // Nếu newDataPoint đã tồn tại, không cập nhật prevData
+            return prevData;
           });
         }
       };
@@ -137,17 +182,34 @@ function App() {
           const newDataPoint = {
             time: new Date(data.data3.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
             so2: data.data3.SO2,
-            co2: data.data3.CO2,
-            no2: data.data3.NO2,
+            co: data.data3.CO,
+            no: data.data3.NO,
             o2: data.data3.O2,
             temperature: data.data3.Temperature,
-            pressure: data.data3.Pressure
+            dust: data.data3.Dust
           };
 
           setChartTV(prevData => {
-            const updatedData = [...prevData, newDataPoint];
-            localStorage.setItem('chartRealTimeTV', JSON.stringify(updatedData));
-            return updatedData;
+            // Kiểm tra xem newDataPoint có tồn tại trong prevData chưa
+            const exists = prevData.some(item => (
+              item.time === newDataPoint.time &&
+              item.so2 === newDataPoint.so2 &&
+              item.co === newDataPoint.co &&
+              item.no === newDataPoint.no &&
+              item.o2 === newDataPoint.o2 &&
+              item.temperature === newDataPoint.temperature &&
+              item.dust === newDataPoint.dust
+            ));
+
+            if (!exists) {
+              // Nếu newDataPoint là duy nhất, thêm vào prevData và cập nhật localStorage
+              const updatedData = [...prevData, newDataPoint];
+              localStorage.setItem('chartRealTimeTV', JSON.stringify(updatedData));
+              return updatedData;
+            }
+
+            // Nếu newDataPoint đã tồn tại, không cập nhật prevData
+            return prevData;
           });
         }
       };
@@ -163,44 +225,52 @@ function App() {
   useEffect(() => {
     const setPoints = {
       SO2: 50,
-      CO2: 100,
-      NO2: 200,
+      CO: 100,
+      NO: 200,
       O2: 150,
       Temperature: 100,
-      Pressure: 500
+      Dust: 500
     }
-    const checkAlarms1 = (data) => {
-      const newAlarms = Object.entries(data).map(([key, value]) => {
-        if (key !== '_id' && key !== 'createdAt') {
-          const gas = key.toUpperCase();
-          if (value > setPoints[key]) {
-            return {
-              date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-              }),
-              status: 'Alarm',
-              area: 'Bach Khoa Station',
-              name: `${gas} vượt quá mức an toàn`,
-              value: value,
-              acknowledged: false // Thêm trạng thái acknowledged
-            };
+    if (JSON.stringify(data.data1) !== JSON.stringify(previousData1)) {
+      const checkAlarms1 = (data) => {
+        const newAlarms = Object.entries(data).map(([key, value]) => {
+          if (key !== '_id' && key !== 'createdAt') {
+            const gas = key.toUpperCase();
+            if (value > setPoints[key]) {
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Bach Khoa Station',
+                name: `${gas} vượt quá mức an toàn`,
+                value: value,
+                acknowledged: false // Thêm trạng thái acknowledged
+              };
+            }
           }
-        }
-        return null;
-      }).filter(Boolean);
+          return null;
+        }).filter(Boolean);
 
-      // Kiểm tra xem dữ liệu mới có khác với dữ liệu hiện tại không
-      // if (JSON.stringify(newAlarms) !== JSON.stringify(alarms1)) {
-      setAlarms1(prevAlarms => [...newAlarms, ...prevAlarms]);
-      // }
-    };
+        const uniqueNewAlarms = newAlarms.filter(newAlarm => (
+          !alarms1.some(existingAlarm => (
+            newAlarm.name === existingAlarm.name &&
+            newAlarm.value === existingAlarm.value &&
+            newAlarm.date === existingAlarm.date
+          ))
+        ));
 
-    checkAlarms1(data.data1)
+        // Thêm các newAlarms duy nhất và không trùng lặp vào alarms1
+        setAlarms1(prevAlarms => [...uniqueNewAlarms, ...prevAlarms]);
+      };
+
+      checkAlarms1(data.data1)
+    }
   }, [data.data1]);
 
   useEffect(() => {
@@ -219,44 +289,52 @@ function App() {
   useEffect(() => {
     const setPoints = {
       SO2: 50,
-      CO2: 100,
-      NO2: 200,
+      CO: 100,
+      NO: 200,
       O2: 150,
       Temperature: 100,
-      Pressure: 500
+      Dust: 500
     }
-    const checkAlarms2 = (data) => {
-      const newAlarms = Object.entries(data).map(([key, value]) => {
-        if (key !== '_id' && key !== 'createdAt') {
-          const gas = key.toUpperCase();
-          if (value > setPoints[key]) {
-            return {
-              date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-              }),
-              status: 'Alarm',
-              area: 'Hau Giang Station',
-              name: `${gas} vượt quá mức an toàn`,
-              value: value,
-              acknowledged: false // Thêm trạng thái acknowledged
-            };
+    if (JSON.stringify(data.data2) !== JSON.stringify(previousData2)) {
+      const checkAlarms2 = (data) => {
+        const newAlarms = Object.entries(data).map(([key, value]) => {
+          if (key !== '_id' && key !== 'createdAt') {
+            const gas = key.toUpperCase();
+            if (value > setPoints[key]) {
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Hau Giang Station',
+                name: `${gas} vượt quá mức an toàn`,
+                value: value,
+                acknowledged: false // Thêm trạng thái acknowledged
+              };
+            }
           }
-        }
-        return null;
-      }).filter(Boolean);
+          return null;
+        }).filter(Boolean);
 
-      // Kiểm tra xem dữ liệu mới có khác với dữ liệu hiện tại không
-      // if (JSON.stringify(newAlarms) !== JSON.stringify(alarms1)) {
-      setAlarms2(prevAlarms => [...newAlarms, ...prevAlarms]);
-      // }
-    };
+        const uniqueNewAlarms = newAlarms.filter(newAlarm => (
+          !alarms2.some(existingAlarm => (
+            newAlarm.name === existingAlarm.name &&
+            newAlarm.value === existingAlarm.value &&
+            newAlarm.date === existingAlarm.date
+          ))
+        ));
 
-    checkAlarms2(data.data2)
+        // Thêm các newAlarms duy nhất và không trùng lặp vào alarms2
+        setAlarms2(prevAlarms => [...uniqueNewAlarms, ...prevAlarms]);
+      };
+
+      checkAlarms2(data.data2)
+    }
   }, [data.data2]);
   useEffect(() => {
     localStorage.setItem('alarms2', JSON.stringify(alarms2));
@@ -274,44 +352,52 @@ function App() {
   useEffect(() => {
     const setPoints = {
       SO2: 50,
-      CO2: 100,
-      NO2: 200,
+      CO: 100,
+      NO: 200,
       O2: 150,
       Temperature: 100,
-      Pressure: 500
+      Dust: 500
     }
-    const checkAlarms3 = (data) => {
-      const newAlarms = Object.entries(data).map(([key, value]) => {
-        if (key !== '_id' && key !== 'createdAt') {
-          const gas = key.toUpperCase();
-          if (value > setPoints[key]) {
-            return {
-              date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-              }),
-              status: 'Alarm',
-              area: 'Tra Vinh Station',
-              name: `${gas} vượt quá mức an toàn`,
-              value: value,
-              acknowledged: false // Thêm trạng thái acknowledged
-            };
+    if (JSON.stringify(data.data3) !== JSON.stringify(previousData3)) {
+      const checkAlarms3 = (data) => {
+        const newAlarms = Object.entries(data).map(([key, value]) => {
+          if (key !== '_id' && key !== 'createdAt') {
+            const gas = key.toUpperCase();
+            if (value > setPoints[key]) {
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Tra Vinh Station',
+                name: `${gas} vượt quá mức an toàn`,
+                value: value,
+                acknowledged: false // Thêm trạng thái acknowledged
+              };
+            }
           }
-        }
-        return null;
-      }).filter(Boolean);
+          return null;
+        }).filter(Boolean);
 
-      // Kiểm tra xem dữ liệu mới có khác với dữ liệu hiện tại không
-      // if (JSON.stringify(newAlarms) !== JSON.stringify(alarms1)) {
-      setAlarms3(prevAlarms => [...newAlarms, ...prevAlarms]);
-      // }
-    };
+        const uniqueNewAlarms = newAlarms.filter(newAlarm => (
+          !alarms3.some(existingAlarm => (
+            newAlarm.name === existingAlarm.name &&
+            newAlarm.value === existingAlarm.value &&
+            newAlarm.date === existingAlarm.date
+          ))
+        ));
 
-    checkAlarms3(data.data3)
+        // Thêm các newAlarms duy nhất và không trùng lặp vào alarms3
+        setAlarms3(prevAlarms => [...uniqueNewAlarms, ...prevAlarms]);
+      };
+
+      checkAlarms3(data.data3)
+    }
   }, [data.data3]);
   useEffect(() => {
     localStorage.setItem('alarms3', JSON.stringify(alarms3));
@@ -325,27 +411,45 @@ function App() {
   const newData = {
     data1: {
       SO2: data.data1.SO2,
-      CO2: data.data1.CO2,
-      NO2: data.data1.NO2,
+      CO: data.data1.CO,
+      NO: data.data1.NO,
       O2: data.data1.O2,
       Temperature: data.data1.Temperature,
-      Pressure: data.data1.Pressure
+      Dust: data.data1.Dust,
+      StatusTemp: data.data1.StatusTemp,
+      StatusDust: data.data1.StatusDust,
+      StatusSO2: data.data1.StatusSO2,
+      StatusCO: data.data1.StatusCO,
+      StatusNO: data.data1.StatusNO,
+      StatusO2: data.data1.StatusO2
     },
     data2: {
       SO2: data.data2.SO2,
-      CO2: data.data2.CO2,
-      NO2: data.data2.NO2,
+      CO: data.data2.CO,
+      NO: data.data2.NO,
       O2: data.data2.O2,
       Temperature: data.data2.Temperature,
-      Pressure: data.data2.Pressure
+      Dust: data.data2.Dust,
+      StatusTemp: data.data2.StatusTemp,
+      StatusDust: data.data2.StatusDust,
+      StatusSO2: data.data2.StatusSO2,
+      StatusCO: data.data2.StatusCO,
+      StatusNO: data.data2.StatusNO,
+      StatusO2: data.data2.StatusO2
     },
     data3: {
       SO2: data.data3.SO2,
-      CO2: data.data3.CO2,
-      NO2: data.data3.NO2,
+      CO: data.data3.CO,
+      NO: data.data3.NO,
       O2: data.data3.O2,
       Temperature: data.data3.Temperature,
-      Pressure: data.data3.Pressure
+      Dust: data.data3.Dust,
+      StatusTemp: data.data3.StatusTemp,
+      StatusDust: data.data3.StatusDust,
+      StatusSO2: data.data3.StatusSO2,
+      StatusCO: data.data3.StatusCO,
+      StatusNO: data.data3.StatusNO,
+      StatusO2: data.data3.StatusO2
     }
   };
   const [token, setToken] = useState(Cookies.get('jwt') || null);

@@ -14,7 +14,7 @@ const ChartNo2 = ({ data }) => {
 
   return (
     <div className='no2-chart'>
-      <Typography variant="h6">NO2</Typography> {/* Hiển thị tên của biểu đồ */}
+      <Typography variant="h6">NO mg/Nm3</Typography> {/* Hiển thị tên của biểu đồ */}
 
       <ResponsiveContainer width="80%" height={250}>
         <LineChart data={chartData}>

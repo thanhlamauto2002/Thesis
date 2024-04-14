@@ -8,11 +8,11 @@ function Reportdata({ reportData }) {
         <tr >
           <th>Date</th>
           <th>SO2</th>
-          <th>CO2</th>
-          <th>NO2</th>
+          <th>CO</th>
+          <th>NO</th>
           <th>O2</th>
           <th>Temperature</th>
-          <th>Pressure</th>
+          <th>Dust</th>
           <th>Area</th>
         </tr>
       </thead>
@@ -21,11 +21,11 @@ function Reportdata({ reportData }) {
           <tr key={index} className='report-tr'>
             <td>{new Date(item.createdAt).toLocaleString('en-GB')}</td>
             <td>{item.SO2}</td>
-            <td>{item.CO2}</td>
-            <td>{item.NO2}</td>
+            <td>{item.CO}</td>
+            <td>{item.NO}</td>
             <td>{item.O2}</td>
             <td>{item.Temperature}</td>
-            <td>{item.Pressure}</td>
+            <td>{item.Dust}</td>
             <td>{item.Station}</td>
           </tr>
         ))}

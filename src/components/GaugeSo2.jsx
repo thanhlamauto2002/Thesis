@@ -1,7 +1,7 @@
 import GaugeComponent from 'react-gauge-component'
 import React from 'react'
 
-function TempGauge({ Temp }) {
+function GaugeSo2({ valueSo2 }) {
   return (
     <div>
       <GaugeComponent
@@ -60,13 +60,13 @@ function TempGauge({ Temp }) {
         }}
         labels={{
           valueLabel: {
-            formatTextValue: value => 'Temperature:' + ' ' + value + ' ' + 'ºC', matchColorWithArc: 'true', style: { fontSize: '122px', transform: 'translate(0px, 28px)' }
+            formatTextValue: value => 'SO2:' + ' ' + value + ' ' + 'mg/Nm3', matchColorWithArc: 'true', style: { fontSize: '99px', transform: 'translate(0px, 28px)' }
           }
         }}
-        value={Temp}
+        value={valueSo2}
         minValue={10}
         maxValue={80} />
     </div>
   )
 }
-export default TempGauge
+export default GaugeSo2

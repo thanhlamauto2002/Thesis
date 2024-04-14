@@ -25,11 +25,11 @@ function ChartComponent({ data1 }) {
             return {
               time: new Date(data.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
               so2: data.SO2,
-              co2: data.CO2,
-              no2: data.NO2,
+              co2: data.CO,
+              no2: data.NO,
               o2: data.O2,
               temperature: data.Temperature,
-              pressure: data.Pressure
+              pressure: data.Dust
             };
           }
           return null; // Trả về null nếu dữ liệu không hợp lệ

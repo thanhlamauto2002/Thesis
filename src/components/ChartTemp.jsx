@@ -14,7 +14,7 @@ const ChartTemp = ({ data }) => {
 
   return (
     <div className='no-chart'>
-      <Typography variant="h6">Temperature</Typography> {/* Hiển thị tên của biểu đồ */}
+      <Typography variant="h6">Temperature oC</Typography> {/* Hiển thị tên của biểu đồ */}
 
       <ResponsiveContainer width="80%" height={250}>
         <LineChart data={chartData}>

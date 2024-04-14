@@ -1,11 +1,11 @@
 import React from 'react'
 import GaugeComponent from 'react-gauge-component'
 
-function PressComponent({ Press }) {
+function PressComponent({ Dust }) {
   return (
     <div> <GaugeComponent
       type="semicircle"
-      style={{ width: '320px', height: '180px', margin: '5px' }}
+      style={{ width: '200px', height: '125px', margin: '5px', marginLeft: '-10px' }}
       arc={{
         width: 0.2,
         padding: 0.005,
@@ -61,12 +61,12 @@ function PressComponent({ Press }) {
       }}
       labels={{
         valueLabel: {
-          formatTextValue: value => 'Pressure:' + ' ' + value + 'psi', matchColorWithArc: 'true', style: { fontSize: '80px', transform: 'translate(10px, 50px)' }
+          formatTextValue: value => 'Dust:' + ' ' + value + ' ' + 'mg/Nm3', matchColorWithArc: 'true', style: { fontSize: '105px', transform: 'translate(0px, 28px)' }
         }
       }}
-      value={Press}
+      value={Dust}
       minValue={30}
-      maxValue={100} />
+      maxValue={80} />
     </div>
   )
 }

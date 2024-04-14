@@ -62,11 +62,11 @@ const Report = ({ username }) => {
     // Tạo một workbook mới và một worksheet
     const dataToExport = reportData.map(item => ({
       SO2: item.SO2,
-      NO2: item.NO2,
-      CO2: item.CO2,
+      NO: item.NO,
+      CO: item.CO,
       O2: item.O2,
       Temperature: item.Temperature,
-      Pressure: item.Pressure,
+      Dust: item.Dust,
       Station: item.Station,
       UserName: username,
       Date: new Date(item.createdAt).toLocaleString('en-GB'),

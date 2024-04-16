@@ -8,7 +8,7 @@ import AlarmBK from './AlarmBK';
 import AlarmHG from './AlarmHG';
 import AlarmTV from './AlarmTV';
 function Alarm({ alarm1, alarm2, alarm3, onAcknowledgeBK, onAcknowledgeHG, onAcknowledgeTV }) {
-  const [selectedStation, setSelectedStation] = useState(null);
+  const [selectedStation, setSelectedStation] = useState(AlarmData[0]);
   const handleSelectStation = (station) => {
     setSelectedStation(station);
   };

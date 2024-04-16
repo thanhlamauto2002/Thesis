@@ -14,41 +14,26 @@ function PressComponent({ Dust }) {
         subArcs: [
           {
             limit: 40,
-            color: '#EA4228',
-            showTick: true,
-            tooltip: {
-              text: 'Too low pressure!'
-            },
-            // onClick: () => console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
-            // onMouseMove: () => console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"),
-            // onMouseLeave: () => console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"),
-          },
-          {
-            limit: 55,
-            color: '#F5CD19',
-            showTick: true,
-            tooltip: {
-              text: 'Low pressure!'
-            }
-          },
-          {
-            limit: 65,
             color: '#5BE12C',
             showTick: true,
             tooltip: {
-              text: 'OK pressure!'
-            }
+              text: 'OK Dust!'
+            },
+
           },
           {
-            limit: 80, color: '#F5CD19', showTick: true,
+            limit: 65,
+            color: '#F5CD19',
+            showTick: true,
             tooltip: {
-              text: 'High pressure!'
+              text: 'High dust!'
             }
           },
+
           {
             color: '#EA4228',
             tooltip: {
-              text: 'Too high pressure!'
+              text: 'Too high dust!'
             }
           }
         ]

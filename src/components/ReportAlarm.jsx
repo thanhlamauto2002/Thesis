@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ReportAlarm() {
+function ReportAlarm({ reportData }) {
   return (
     <table className='table-report-alarm'>
       <thead>
@@ -12,8 +12,16 @@ function ReportAlarm() {
           <th>Value</th>
         </tr>
       </thead>
-
       <tbody>
+        {reportData.map((item, index) => (
+          <tr key={index} className='report-tr'>
+            <td>{new Date(item.date).toLocaleString('en-GB')}</td>
+            <td>{item.status}</td>
+            <td>{item.area}</td>
+            <td>{item.name}</td>
+            <td>{item.value}</td>
+          </tr>
+        ))}
       </tbody>
     </table>
   )

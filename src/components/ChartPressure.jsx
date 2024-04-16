@@ -14,7 +14,7 @@ const ChartPressure = ({ data }) => {
 
   return (
     <div className='h2s-chart'>
-      <Typography variant="h6">Dust mg/Nm3</Typography> {/* Hiển thị tên của biểu đồ */}
+      <Typography variant="h6">Dust (mg/Nm3)</Typography> {/* Hiển thị tên của biểu đồ */}
 
       <ResponsiveContainer width="80%" height={250}>
         <LineChart data={chartData}>

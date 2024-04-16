@@ -2,6 +2,7 @@ import GaugeComponent from 'react-gauge-component'
 import React from 'react'
 
 function GaugeCo({ valueCo }) {
+
   return (
     <div>
       <GaugeComponent
@@ -13,41 +14,19 @@ function GaugeCo({ valueCo }) {
           cornerRadius: 1,
           // gradient: true,
           subArcs: [
-            {
-              limit: 15,
-              color: '#EA4228',
-              showTick: true,
-              tooltip: {
-                text: 'Too low temperature!'
-              },
 
-            },
             {
-              limit: 25,
-              color: '#F5CD19',
-              showTick: true,
-              tooltip: {
-                text: 'Low temperature!'
-              }
-            },
-            {
-              limit: 40,
+              limit: 60,
               color: '#5BE12C',
               showTick: true,
               tooltip: {
-                text: 'OK temperature!'
-              }
-            },
-            {
-              limit: 60, color: '#F5CD19', showTick: true,
-              tooltip: {
-                text: 'High temperature!'
+                text: 'OK CO!'
               }
             },
             {
               color: '#EA4228',
               tooltip: {
-                text: 'Too high temperature!'
+                text: 'Too high CO!'
               }
             }
           ]

@@ -13,41 +13,21 @@ function GaugeSo2({ valueSo2 }) {
           cornerRadius: 1,
           // gradient: true,
           subArcs: [
-            {
-              limit: 15,
-              color: '#EA4228',
-              showTick: true,
-              tooltip: {
-                text: 'Too low temperature!'
-              },
 
-            },
-            {
-              limit: 25,
-              color: '#F5CD19',
-              showTick: true,
-              tooltip: {
-                text: 'Low temperature!'
-              }
-            },
+
             {
               limit: 40,
               color: '#5BE12C',
               showTick: true,
               tooltip: {
-                text: 'OK temperature!'
+                text: 'OK SO2!'
               }
             },
-            {
-              limit: 60, color: '#F5CD19', showTick: true,
-              tooltip: {
-                text: 'High temperature!'
-              }
-            },
+
             {
               color: '#EA4228',
               tooltip: {
-                text: 'Too high temperature!'
+                text: 'Too high SO2!'
               }
             }
           ]

@@ -13,7 +13,7 @@ const ChartSo2 = ({ data }) => {
 
   return (
     <div className='so2-chart'>
-      <Typography variant="h6">SO2 mg/Nm3</Typography> {/* Hiển thị tên của biểu đồ */}
+      <Typography variant="h6">SO2 (mg/Nm3)</Typography> {/* Hiển thị tên của biểu đồ */}
 
       <ResponsiveContainer width="80%" height={250}>
         <LineChart data={chartData}>

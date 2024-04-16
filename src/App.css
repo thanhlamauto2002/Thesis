@@ -18,6 +18,7 @@ body {
   overflow: hidden;
   position: relative;
   z-index: 1;
+
 }
 
 .SidebarList {
@@ -25,6 +26,7 @@ body {
   padding: 0;
   width: 100%;
   margin-top: 0;
+
 }
 
 .SidebarList .row-side {
@@ -248,7 +250,7 @@ span.user-name {
   border: 1px solid black;
   /* border-radius: 4px; */
   margin-bottom: 20px;
-  background-color: white;
+  background-color: floralwhite;
   /* Khoảng cách giữa các dashboard-card */
 }
 
@@ -588,6 +590,8 @@ input[type="text"] {
 
 .table-report-alarm {
   width: 100%;
+  border-collapse: collapse;
+
 }
 
 .table-report-alarm th:nth-child(4),
@@ -601,13 +605,30 @@ input[type="text"] {
   height: 40px;
 }
 
+.table-report-alarm tr {
+  background-color: wheat;
+  text-align: center;
+  height: 40px;
+}
+
 .table-report-data td {
   text-align: center;
   height: 40px;
   border: 2px solid black;
 }
 
+.table-report-alarm td {
+  text-align: center;
+  height: 40px;
+  border: 2px solid black;
+}
+
 .table-report-data th {
+  text-align: center;
+  border: 1px solid black;
+}
+
+.table-report-alarm th {
   text-align: center;
   border: 1px solid black;
 }
@@ -780,16 +801,19 @@ svg {
   height: 100%;
 }
 
-.user-management {
-  height: 48px;
-  border: 1px solid black;
-}
-
-.user-tool {
-  height: 48px;
-  border: 1px solid black;
-}
 
 .semicircle-gauge {
   transform: translate(10px, 10px);
+}
+
+.error {
+  color: red;
+}
+
+.calib {
+  color: teal;
+}
+
+.normal {
+  color: green;
 }

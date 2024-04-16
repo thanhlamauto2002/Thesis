@@ -1,0 +1,149 @@
+.user-table th {
+  background-color: #2F4050;
+  text-align: center;
+  border: 1px solid black;
+  color: white;
+}
+
+.user-management {
+  height: 48px;
+  align-content: center;
+  text-align: center;
+  font-size: x-large;
+  font-weight: bolder;
+}
+
+.user-tool {
+  height: 48px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Màu nền đen mờ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  width: 400px;
+}
+
+/* Form */
+.user-form input,
+.user-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.user-form button {
+  padding: 10px 20px;
+  background-color: #2F4050;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.user-form button:hover {
+  background-color: cadetblue;
+}
+
+.add-user {
+  padding: 5px;
+  border: 1px solid black;
+  margin-right: 50px;
+  background-color: #2F4050;
+  color: white;
+}
+
+.add-user:hover {
+  background-color: cadetblue;
+  cursor: pointer;
+
+}
+
+.user-tool {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+
+.table-user-data {
+  width: 100%;
+  border-collapse: collapse;
+
+}
+
+.table-user-data th:nth-child(4),
+/* Cột Role */
+.table-user-data td:nth-child(4) {
+  width: 10%
+}
+
+.table-user-data tr {
+  background-color: wheat;
+  text-align: center;
+  height: 40px;
+}
+
+.table-user-data td {
+  text-align: center;
+  height: 40px;
+  border: 2px solid black;
+}
+
+.btn-create {
+  margin-left: 10px;
+}
+
+.btn-cancel {
+  margin-left: 100px;
+}
+
+.search-bar .search-input {
+  padding: 8px 32px 8px 12px;
+  /* Điều chỉnh padding để để chừa không gian cho biểu tượng */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 250px;
+  /* Độ rộng của ô input */
+}
+
+.search-bar .search-button {
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 4px;
+  padding: 6px;
+}
+
+.search-bar .search-button:hover {
+  background-color: cadetblue;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}

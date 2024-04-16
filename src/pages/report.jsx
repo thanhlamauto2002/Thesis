@@ -12,6 +12,7 @@ const Report = ({ username }) => {
   const [selectedStation, setSelectedStation] = useState('BK');
   const [selectedOption, setSelectedOption] = useState('data');
   const [reportData, setReportData] = useState([]);
+  const [isSubmited, setIsSubmited] = useState(false);
 
 
 
@@ -21,12 +22,13 @@ const Report = ({ username }) => {
     const timestampStart = startObject.getTime();
     const endObject = new Date(endDate);
     const timestampEnd = endObject.getTime();
-
+    setIsSubmited(true)
 
     // Gọi API endpoint để lấy dữ liệu từ MongoDB với các tham số selectedStation, startDate và endDate
-    axios.get(`http://localhost:8017/v1/getdatareport?station=${selectedStation}&startDate=${timestampStart}&endDate=${timestampEnd}`)
+    axios.get(`http://localhost:8017/v1/getdatareport?station=${selectedStation}&option=${selectedOption}&startDate=${timestampStart}&endDate=${timestampEnd}`)
       .then(response => {
         setReportData(response.data);
+        console.log(response.data)
       })
       .catch(error => {
         console.error('Error fetching report data:', error);
@@ -35,19 +37,25 @@ const Report = ({ username }) => {
 
   const handleStartDateChange = (date) => {
     setStartDate(date);
+    setIsSubmited(false)
 
   };
   const handleEndDateChange = (date) => {
     setEndDate(date);
+    setIsSubmited(false)
 
   };
 
   const handleChangeStation = (event) => {
     setSelectedStation(event.target.value); // Cập nhật giá trị đã chọn khi người dùng thay đổi
+    setIsSubmited(false)
+
   };
 
   const handleChangeOption = (event) => {
     setSelectedOption(event.target.value); // Cập nhật giá trị đã chọn khi người dùng thay đổi
+    setIsSubmited(false)
+
   };
 
   const currentDate = new Date();
@@ -58,25 +66,44 @@ const Report = ({ username }) => {
       console.error('No data to export.');
       return;
     }
+    let dataToExport = []
+    if (selectedOption === 'data') {
+      // Tạo một workbook data mới và một worksheet
+      dataToExport = reportData.map(item => ({
+        SO2: item.SO2,
+        NO: item.NO,
+        CO: item.CO,
+        O2: item.O2,
+        Temperature: item.Temperature,
+        Dust: item.Dust,
+        Station: item.Station,
+        UserName: username,
+        Date: new Date(item.createdAt).toLocaleString('en-GB'),
+        StartDate: startDate.toLocaleString('en-GB'), // Thêm startDate vào dữ liệu export
+        EndDate: endDate.toLocaleString('en-GB'),     // Thêm endDate vào dữ liệu export
+        CurrentTime: currentDate.toLocaleString('en-GB'),
+        Option: 'Data'
+      }))
 
-    // Tạo một workbook mới và một worksheet
-    const dataToExport = reportData.map(item => ({
-      SO2: item.SO2,
-      NO: item.NO,
-      CO: item.CO,
-      O2: item.O2,
-      Temperature: item.Temperature,
-      Dust: item.Dust,
-      Station: item.Station,
-      UserName: username,
-      Date: new Date(item.createdAt).toLocaleString('en-GB'),
-      StartDate: startDate.toLocaleString('en-GB'), // Thêm startDate vào dữ liệu export
-      EndDate: endDate.toLocaleString('en-GB'),     // Thêm endDate vào dữ liệu export
-      CurrentTime: currentDate.toLocaleString('en-GB')
+    }
+    else {
+      dataToExport = reportData.map(item => ({
+        Date: new Date(item.date).toLocaleString('en-GB'),
+        Status: item.status,
+        Area: item.area,
+        Name: item.name,
+        Value: item.value,
+        UserName: username,
+        StartDate: startDate.toLocaleString('en-GB'), // Thêm startDate vào dữ liệu export
+        EndDate: endDate.toLocaleString('en-GB'),     // Thêm endDate vào dữ liệu export
+        CurrentTime: currentDate.toLocaleString('en-GB'),
+        Option: 'Alarm'
+      }))
 
-    }));
-
+    }
     try {
+      console.log('dataexport: ', dataToExport)
+
       // Gửi dữ liệu dataToExport lên backend
       const response = await axios.post('http://localhost:8017/v1/export', {
         dataToExport: dataToExport
@@ -158,7 +185,9 @@ const Report = ({ username }) => {
         <div className="scrollable-table">
 
           <div className='report-table'>
-            {selectedOption === 'data' && <Reportdata reportData={reportData} />}
+            {selectedOption === 'data' && isSubmited === true && <Reportdata reportData={reportData} />}
+            {selectedOption === 'alarm' && isSubmited === true && <ReportAlarm reportData={reportData} />}
+
           </div>
         </div>
       </div>

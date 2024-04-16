@@ -14,15 +14,6 @@ function TempGauge({ Temp }) {
           // gradient: true,
           subArcs: [
             {
-              limit: 15,
-              color: '#EA4228',
-              showTick: true,
-              tooltip: {
-                text: 'Too low temperature!'
-              },
-
-            },
-            {
               limit: 25,
               color: '#F5CD19',
               showTick: true,

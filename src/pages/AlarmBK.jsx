@@ -8,6 +8,18 @@ function AlarmBK({ data1, ackBK }) {
   const handleAcknowledge = (index) => {
     ackBK(index);
   };
+  const getRowId = (id) => {
+    switch (id) {
+      case 'red':
+        return 'red'
+      case 'orange':
+        return 'orange'
+      case 'green':
+        return 'green'
+      default:
+        return null
+    }
+  };
   return (
     <div className='alarmbk-box'>
       <div className="scrollable-table">
@@ -23,7 +35,7 @@ function AlarmBK({ data1, ackBK }) {
           </thead>
           <tbody>
             {data1.map((alarm, index) => (
-              <tr key={index} className="alarm-row">
+              <tr key={index} className={getRowId(alarm.id)} >
                 <td>{alarm.date}</td>
                 <td className="alarm-status">
                   <IconButton style={{ fontSize: 'medium', fontWeight: 'bolder', margin: '1px' }}>

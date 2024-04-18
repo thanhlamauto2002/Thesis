@@ -8,6 +8,19 @@ function AlarmHG({ data1, ackHG }) {
   const handleAcknowledge = (index) => {
     ackHG(index);
   };
+  // Định nghĩa hàm để trả về className dựa trên alarm.id
+  const getRowId = (id) => {
+    switch (id) {
+      case 'red':
+        return 'red'
+      case 'orange':
+        return 'orange'
+      case 'green':
+        return 'green'
+      default:
+        return null
+    }
+  };
   return (
     <div className='alarmbk-box'>
       <div className="scrollable-table">
@@ -23,7 +36,7 @@ function AlarmHG({ data1, ackHG }) {
           </thead>
           <tbody>
             {data1.map((alarm, index) => (
-              <tr key={index} className="alarm-row">
+              <tr key={index} className={getRowId(alarm.id)}>
                 <td>{alarm.date}</td>
                 <td className="alarm-status">
                   <IconButton style={{ fontSize: 'medium', fontWeight: 'bolder', margin: '1px' }}>

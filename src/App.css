@@ -395,15 +395,19 @@ p.MuiTypography-root.MuiTypography-body1.titlte.css-ahj2mt-MuiTypography-root {
 
 .alarmbk-table th,
 .alarmbk-table td {
-  border: 1px solid #dddddd;
-  padding: 8px;
+  border: 1px solid black;
   text-align: center;
-  /* Căn giữa nội dung trong cả cột */
+}
+
+.alarmbk-table tr {
+  height: 20px;
 }
 
 .alarmbk-table th {
   background-color: #f2f2f2;
 }
+
+
 
 .alarmbk-table tr:hover {
   background-color: darkgoldenrod;
@@ -491,12 +495,7 @@ ul.AlarmList {
   color: white;
 }
 
-.alarmbk-table th,
-.alarmbk-table td {
-  border: 1px solid black;
-  padding: 8px;
-  text-align: center;
-}
+
 
 thead {
   height: 48px;
@@ -602,24 +601,23 @@ input[type="text"] {
 .table-report-data tr {
   background-color: wheat;
   text-align: center;
-  height: 40px;
+  height: 20px;
 }
 
 .table-report-alarm tr {
   background-color: wheat;
   text-align: center;
-  height: 40px;
+  height: 20px;
 }
 
 .table-report-data td {
   text-align: center;
-  height: 40px;
   border: 2px solid black;
 }
 
 .table-report-alarm td {
   text-align: center;
-  height: 40px;
+  height: 20px;
   border: 2px solid black;
 }
 
@@ -816,4 +814,16 @@ svg {
 
 .normal {
   color: green;
+}
+
+.red {
+  background-color: red;
+}
+
+.orange {
+  background-color: orange;
+}
+
+.green {
+  background-color: forestgreen;
 }

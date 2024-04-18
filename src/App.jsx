@@ -226,6 +226,14 @@ function App() {
     const storedAlarms = localStorage.getItem('alarms1');
     return storedAlarms ? JSON.parse(storedAlarms) : [];
   });
+  const [isExceedBK, setIsExceedBK] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
+    O2: false,
+    Temperature: false,
+    Dust: false
+  });
   useEffect(() => {
     const setPoints = {
       SO2: 50,
@@ -246,7 +254,106 @@ function App() {
             && key !== 'StatusNO'
             && key !== 'StatusO2') {
             const gas = key.toUpperCase();
-            if (value > setPoints[key]) {
+            if (value >= setPoints[key] && !isExceedBK[key]) {
+              setIsExceedBK(prevState => ({
+                ...prevState,
+                [key]: true
+              })); return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Bach Khoa Station',
+                name: `${gas} exceeds the safe level`,
+                value: value,
+                acknowledged: false, // Thêm trạng thái acknowledged 
+                id: 'red'
+              };
+            } else if (value === 'Error') {
+              let nameOfSignal = null
+              switch (key) {
+                case 'StatusTemp':
+                  nameOfSignal = 'Error Temperature Signal';
+                  break;
+                case 'StatusDust':
+                  nameOfSignal = 'Error Dust Signal';
+                  break;
+                case 'StatusSO2':
+                  nameOfSignal = 'Error SO2 Signal';
+                  break;
+                case 'StatusO2':
+                  nameOfSignal = 'Error O2 Signal';
+                  break;
+                case 'StatusCO':
+                  nameOfSignal = 'Error CO Signal';
+                  break;
+                case 'StatusNO':
+                  nameOfSignal = 'Error NO Signal';
+                  break;
+                default:
+                  nameOfSignal = 'Unknown Signal';
+                  break;
+              }
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Bach Khoa Station',
+                name: nameOfSignal,
+                value: 'Error',
+                acknowledged: false, // Thêm trạng thái acknowledged
+                id: 'red'
+              }
+            } else if (value >= 0.9 * setPoints[key] && value < setPoints[key] && !isExceedBK[key]) {
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Bach Khoa Station',
+                name: `${gas} is higher than the 90% of safe level`,
+                value: value,
+                acknowledged: false,// Thêm trạng thái acknowledged
+                id: 'orange'
+              };
+            } else if (value < setPoints[key] && isExceedBK[key]) {
+              setIsExceedBK(prevState => ({
+                ...prevState,
+                [key]: false
+              }));
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Bach Khoa Station',
+                name: `${gas} has decreased underneath the limit`,
+                value: value,
+                acknowledged: false,// Thêm trạng thái acknowledged
+                id: 'green'
+              };
+            } else if (value >= setPoints[key] && isExceedBK[key]) {
               return {
                 date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
                   day: '2-digit',
@@ -260,50 +367,12 @@ function App() {
                 area: 'Bach Khoa Station',
                 name: `${gas} exceeds the safe level`,
                 value: value,
-                acknowledged: false // Thêm trạng thái acknowledged
+                acknowledged: false,// Thêm trạng thái acknowledged
+                id: 'red'
               };
             }
-          } else if (value === 'Error') {
-            let nameOfSignal = null
-            switch (key) {
-              case 'StatusTemp':
-                nameOfSignal = 'Error Temperature Signal';
-                break;
-              case 'StatusDust':
-                nameOfSignal = 'Error Dust Signal';
-                break;
-              case 'StatusSO2':
-                nameOfSignal = 'Error SO2 Signal';
-                break;
-              case 'StatusO2':
-                nameOfSignal = 'Error O2 Signal';
-                break;
-              case 'StatusCO':
-                nameOfSignal = 'Error CO Signal';
-                break;
-              case 'StatusNO':
-                nameOfSignal = 'Error NO Signal';
-                break;
-              default:
-                nameOfSignal = 'Unknown Signal';
-                break;
-            }
-            return {
-              date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-              }),
-              status: 'Alarm',
-              area: 'Bach Khoa Station',
-              name: nameOfSignal,
-              value: 'Error',
-              acknowledged: false // Thêm trạng thái acknowledged
-            };
           }
+
         }).filter(Boolean);
 
         const uniqueNewAlarms = newAlarms.filter(newAlarm => (
@@ -358,6 +427,14 @@ function App() {
     const storedAlarms2 = localStorage.getItem('alarms2');
     return storedAlarms2 ? JSON.parse(storedAlarms2) : [];
   });
+  const [isExceedHG, setIsExceedHG] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
+    O2: false,
+    Temperature: false,
+    Dust: false
+  });
   useEffect(() => {
     const setPoints = {
       SO2: 50,
@@ -378,7 +455,106 @@ function App() {
             && key !== 'StatusNO'
             && key !== 'StatusO2') {
             const gas = key.toUpperCase();
-            if (value > setPoints[key]) {
+            if (value >= setPoints[key] && !isExceedHG[key]) {
+              setIsExceedHG(prevState => ({
+                ...prevState,
+                [key]: true
+              })); return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Hau Giang Station',
+                name: `${gas} exceeds the safe level`,
+                value: value,
+                acknowledged: false, // Thêm trạng thái acknowledged 
+                id: 'red'
+              };
+            } else if (value === 'Error') {
+              let nameOfSignal = null
+              switch (key) {
+                case 'StatusTemp':
+                  nameOfSignal = 'Error Temperature Signal';
+                  break;
+                case 'StatusDust':
+                  nameOfSignal = 'Error Dust Signal';
+                  break;
+                case 'StatusSO2':
+                  nameOfSignal = 'Error SO2 Signal';
+                  break;
+                case 'StatusO2':
+                  nameOfSignal = 'Error O2 Signal';
+                  break;
+                case 'StatusCO':
+                  nameOfSignal = 'Error CO Signal';
+                  break;
+                case 'StatusNO':
+                  nameOfSignal = 'Error NO Signal';
+                  break;
+                default:
+                  nameOfSignal = 'Unknown Signal';
+                  break;
+              }
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Hau Giang Station',
+                name: nameOfSignal,
+                value: 'Error',
+                acknowledged: false, // Thêm trạng thái acknowledged
+                id: 'red'
+              }
+            } else if (value >= 0.9 * setPoints[key] && value < setPoints[key] && !isExceedHG[key]) {
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Hau Giang Station',
+                name: `${gas} is higher than the 90% of safe level`,
+                value: value,
+                acknowledged: false,// Thêm trạng thái acknowledged
+                id: 'orange'
+              };
+            } else if (value < setPoints[key] && isExceedHG[key]) {
+              setIsExceedHG(prevState => ({
+                ...prevState,
+                [key]: false
+              }));
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Hau Giang Station',
+                name: `${gas} has decreased underneath the limit`,
+                value: value,
+                acknowledged: false,// Thêm trạng thái acknowledged
+                id: 'green'
+              };
+            } else if (value >= setPoints[key] && isExceedHG[key]) {
               return {
                 date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
                   day: '2-digit',
@@ -392,49 +568,10 @@ function App() {
                 area: 'Hau Giang Station',
                 name: `${gas} exceeds the safe level`,
                 value: value,
-                acknowledged: false // Thêm trạng thái acknowledged
+                acknowledged: false,// Thêm trạng thái acknowledged
+                id: 'red'
               };
             }
-          } else if (value === 'Error') {
-            let nameOfSignal = null
-            switch (key) {
-              case 'StatusTemp':
-                nameOfSignal = 'Error Temperature Signal';
-                break;
-              case 'StatusDust':
-                nameOfSignal = 'Error Dust Signal';
-                break;
-              case 'StatusSO2':
-                nameOfSignal = 'Error SO2 Signal';
-                break;
-              case 'StatusO2':
-                nameOfSignal = 'Error O2 Signal';
-                break;
-              case 'StatusCO':
-                nameOfSignal = 'Error CO Signal';
-                break;
-              case 'StatusNO':
-                nameOfSignal = 'Error NO Signal';
-                break;
-              default:
-                nameOfSignal = 'Unknown Signal';
-                break;
-            }
-            return {
-              date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-              }),
-              status: 'Alarm',
-              area: 'Hau Giang Station',
-              name: nameOfSignal,
-              value: 'Error',
-              acknowledged: false // Thêm trạng thái acknowledged
-            };
           }
         }).filter(Boolean);
 
@@ -469,6 +606,8 @@ function App() {
       checkAlarms2(data.data2)
     }
   }, [data.data2]);
+  console.log(isExceedHG)
+
   // Lưu alarm HG mới vào db
   useEffect(() => {
     if (currentSocket && currentSocket.connected) {
@@ -490,6 +629,14 @@ function App() {
     const storedAlarms3 = localStorage.getItem('alarms3');
     return storedAlarms3 ? JSON.parse(storedAlarms3) : [];
   });
+  const [isExceed, setIsExceed] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
+    O2: false,
+    Temperature: false,
+    Dust: false
+  });
   useEffect(() => {
     const setPoints = {
       SO2: 50,
@@ -499,6 +646,7 @@ function App() {
       Temperature: 100,
       Dust: 500
     }
+
     if (JSON.stringify(data.data3) !== JSON.stringify(previousData3)) {
       const checkAlarms3 = (data) => {
         const newAlarms = Object.entries(data).map(([key, value]) => {
@@ -510,7 +658,106 @@ function App() {
             && key !== 'StatusNO'
             && key !== 'StatusO2') {
             const gas = key.toUpperCase();
-            if (value > setPoints[key]) {
+            if (value >= setPoints[key] && !isExceed[key]) {
+              setIsExceed(prevState => ({
+                ...prevState,
+                [key]: true
+              })); return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Tra Vinh Station',
+                name: `${gas} exceeds the safe level`,
+                value: value,
+                acknowledged: false, // Thêm trạng thái acknowledged 
+                id: 'red'
+              };
+            } else if (value === 'Error') {
+              let nameOfSignal = null
+              switch (key) {
+                case 'StatusTemp':
+                  nameOfSignal = 'Error Temperature Signal';
+                  break;
+                case 'StatusDust':
+                  nameOfSignal = 'Error Dust Signal';
+                  break;
+                case 'StatusSO2':
+                  nameOfSignal = 'Error SO2 Signal';
+                  break;
+                case 'StatusO2':
+                  nameOfSignal = 'Error O2 Signal';
+                  break;
+                case 'StatusCO':
+                  nameOfSignal = 'Error CO Signal';
+                  break;
+                case 'StatusNO':
+                  nameOfSignal = 'Error NO Signal';
+                  break;
+                default:
+                  nameOfSignal = 'Unknown Signal';
+                  break;
+              }
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Tra Vinh Station',
+                name: nameOfSignal,
+                value: 'Error',
+                acknowledged: false, // Thêm trạng thái acknowledged
+                id: 'red'
+              }
+            } else if (value >= 0.9 * setPoints[key] && value < setPoints[key] && !isExceed[key]) {
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Tra Vinh Station',
+                name: `${gas} is higher than the 90% of safe level`,
+                value: value,
+                acknowledged: false,// Thêm trạng thái acknowledged
+                id: 'orange'
+              };
+            } else if (value < setPoints[key] && isExceed[key]) {
+              setIsExceed(prevState => ({
+                ...prevState,
+                [key]: false
+              }));
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Tra Vinh Station',
+                name: `${gas} has decreased underneath the limit`,
+                value: value,
+                acknowledged: false,// Thêm trạng thái acknowledged
+                id: 'green'
+              };
+            } else if (value >= setPoints[key] && isExceed[key]) {
               return {
                 date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
                   day: '2-digit',
@@ -524,49 +771,10 @@ function App() {
                 area: 'Tra Vinh Station',
                 name: `${gas} exceeds the safe level`,
                 value: value,
-                acknowledged: false // Thêm trạng thái acknowledged
+                acknowledged: false,// Thêm trạng thái acknowledged
+                id: 'red'
               };
             }
-          } else if (value === 'Error') {
-            let nameOfSignal = null
-            switch (key) {
-              case 'StatusTemp':
-                nameOfSignal = 'Error Temperature Signal';
-                break;
-              case 'StatusDust':
-                nameOfSignal = 'Error Dust Signal';
-                break;
-              case 'StatusSO2':
-                nameOfSignal = 'Error SO2 Signal';
-                break;
-              case 'StatusO2':
-                nameOfSignal = 'Error O2 Signal';
-                break;
-              case 'StatusCO':
-                nameOfSignal = 'Error CO Signal';
-                break;
-              case 'StatusNO':
-                nameOfSignal = 'Error NO Signal';
-                break;
-              default:
-                nameOfSignal = 'Unknown Signal';
-                break;
-            }
-            return {
-              date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-              }),
-              status: 'Alarm',
-              area: 'Tra Vinh Station',
-              name: nameOfSignal,
-              value: 'Error',
-              acknowledged: false // Thêm trạng thái acknowledged
-            };
           }
         }).filter(Boolean);
 
@@ -584,9 +792,6 @@ function App() {
           const unixTimestampAlarms = uniqueNewAlarms.map(alarm => {
             // Sao chép đối tượng alarm thành một đối tượng mới để tránh ảnh hưởng đến uniqueNewAlarms ban đầu
             const updatedAlarm = { ...alarm };
-
-            // Chuyển đổi trường date thành timestamp Unix
-
             // Gán lại trường date bằng timestamp Unix
             updatedAlarm.date = data.createdAt;
 
@@ -599,6 +804,7 @@ function App() {
 
       checkAlarms3(data.data3)
     }
+
   }, [data.data3]);
   // Lưu alarm TV mới vào db
   useEffect(() => {
@@ -715,7 +921,7 @@ function App() {
               </PrivateRoute>} />
               <Route path='report' element={<PrivateRoute><Report username={userName} /></PrivateRoute>} />
               <Route path='dashboard' element={<DashBoard data1={newData.data1} data2={newData.data2} data3={newData.data3} />} />
-              <Route path='userauthencation' element={<PrivateRoute><User verifyEmail={email} /></PrivateRoute>} />
+              <Route path='userauthencation' element={<PrivateRoute><User verifyEmail={email} token={token} /></PrivateRoute>} />
               <Route path='metric' element={<PrivateRoute><Metric data1={chartBK} data2={chartHG} data3={chartTV} /></PrivateRoute>} />
             </Routes>
           </div>

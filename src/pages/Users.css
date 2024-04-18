@@ -94,10 +94,34 @@
 
 }
 
+.table-user-data th:nth-child(1),
+.table-user-data td:nth-child(1) {
+  width: 25%;
+  /* Chiều rộng cột Name */
+}
+
+.table-user-data th:nth-child(2),
+.table-user-data td:nth-child(2) {
+  width: 25%;
+  /* Chiều rộng cột Email */
+}
+
+.table-user-data th:nth-child(3),
+.table-user-data td:nth-child(3) {
+  width: 15%;
+  /* Chiều rộng cột Phone */
+}
+
 .table-user-data th:nth-child(4),
-/* Cột Role */
 .table-user-data td:nth-child(4) {
-  width: 10%
+  width: 15%;
+  /* Chiều rộng cột Role */
+}
+
+.table-user-data th:nth-child(5),
+.table-user-data td:nth-child(5) {
+  width: 20%;
+  /* Chiều rộng cột Status */
 }
 
 .table-user-data tr {
@@ -109,7 +133,8 @@
 .table-user-data td {
   text-align: center;
   height: 40px;
-  border: 2px solid black;
+  border: 1px solid black;
+  align-items: center;
 }
 
 .btn-create {
@@ -146,4 +171,47 @@
   display: flex;
   align-items: center;
   margin-right: 10px;
+}
+
+.user-table .table-user-data .status-user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  margin-left: 80px;
+
+}
+
+svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.modify-icon.css-i4bv87-MuiSvgIcon-root {
+  transform: translate(45px, 0px);
+  color: darkcyan;
+}
+
+svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.modify-icon.css-i4bv87-MuiSvgIcon-root:hover {
+  cursor: pointer;
+  background-color: cornsilk;
+  border-radius: 4px;
+}
+
+svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.delete-icon.css-i4bv87-MuiSvgIcon-root {
+  transform: translate(45px, 0px);
+  color: red;
+}
+
+svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.delete-icon.css-i4bv87-MuiSvgIcon-root:hover {
+  cursor: pointer;
+  background-color: cornsilk;
+  border-radius: 4px;
+}
+
+svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.circle.css-i4bv87-MuiSvgIcon-root {
+  font-size: small;
+}
+
+#green-color {
+  color: green
+}
+
+#white-color {
+  color: white;
 }

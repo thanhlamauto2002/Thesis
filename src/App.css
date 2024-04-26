@@ -204,15 +204,7 @@ span.user-name {
   margin-bottom: 0;
 }
 
-.card-radar {
-  width: 600px;
-  height: 100%;
-  border: 1px solid black;
-  border-radius: 8px;
-  margin-top: 8px;
-  margin-left: 20px;
-  margin-bottom: 10px;
-}
+
 
 /* Điều chỉnh kích thước của RadarChart */
 .recharts-responsive-container {
@@ -232,7 +224,7 @@ span.user-name {
 
 .dashboard-container {
   display: flex;
-  background-color: cornsilk;
+  background-color: #ebebeb;
 }
 
 .dashboard-cards {
@@ -246,17 +238,25 @@ span.user-name {
 
 .dashboard-card {
   width: 100%;
-  height: 205px;
+  height: 215px;
   border: 1px solid black;
   /* border-radius: 4px; */
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   background-color: floralwhite;
   /* Khoảng cách giữa các dashboard-card */
+  border-radius: 5px;
 }
 
 .card-header {
   font-weight: bold;
   font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  /* margin-left: 10px;
+  margin-right: 10px; */
+  background-color: #293846;
+  color: white;
+  padding: 5px;
 }
 
 .card-body {
@@ -265,13 +265,40 @@ span.user-name {
   height: 100%;
   align-items: center;
   justify-items: center;
-  justify-content: space-around;
+  justify-content: space-evenly;
+}
+
+.gaugeTemp {
+  width: 240px;
+  height: 160px;
+  border: 1px solid lightseagreen;
+  border-radius: 4px;
+  margin-top: 10px;
 
 }
 
-.card-body .card-box {}
+.gaugeO2 {
+  width: 240px;
+  height: 160px;
+  border: 1px solid lightseagreen;
+  border-radius: 4px;
+  margin-top: 10px;
+}
 
-.row-card {
+.infoAir {
+  width: 200px;
+  height: 160px;
+  border: 1px solid lightseagreen;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.card-body .row-card {
   display: flex;
   align-items: center;
   height: 100%;
@@ -607,7 +634,7 @@ input[type="text"] {
 .table-report-alarm tr {
   background-color: wheat;
   text-align: center;
-  height: 20px;
+  height: 40px;
 }
 
 .table-report-data td {
@@ -617,7 +644,7 @@ input[type="text"] {
 
 .table-report-alarm td {
   text-align: center;
-  height: 20px;
+  height: 40px;
   border: 2px solid black;
 }
 
@@ -826,4 +853,16 @@ svg {
 
 .green {
   background-color: forestgreen;
+}
+
+.red-dashboard {
+  color: red;
+}
+
+.orange-dashboard {
+  color: orange;
+}
+
+.green-dashboard {
+  color: green;
 }

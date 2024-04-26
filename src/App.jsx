@@ -26,6 +26,7 @@ import Cookies from 'js-cookie';
 import io from 'socket.io-client'
 import PrivateRoute from './routes/PrivateRoute'
 import axios from 'axios';
+import { Flip, ToastContainer, toast } from 'react-toastify'
 
 function App() {
 
@@ -234,14 +235,22 @@ function App() {
     Temperature: false,
     Dust: false
   });
+  const [isExceed90BK, setIsExceed90BK] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
+    O2: false,
+    Temperature: false,
+    Dust: false
+  });
   useEffect(() => {
     const setPoints = {
-      SO2: 50,
-      CO: 100,
-      NO: 200,
+      SO2: 500,
+      CO: 1000,
+      NO: 850,
       O2: 150,
       Temperature: 100,
-      Dust: 500
+      Dust: 200
     }
     if (JSON.stringify(data.data1) !== JSON.stringify(previousData1)) {
       const checkAlarms1 = (data) => {
@@ -252,8 +261,34 @@ function App() {
             && key !== 'StatusSO2'
             && key !== 'StatusCO'
             && key !== 'StatusNO'
-            && key !== 'StatusO2') {
+            && key !== 'StatusO2'
+            && key !== 'O2'
+            && key !== 'Temperature') {
             const gas = key.toUpperCase();
+            let unit = null
+            switch (key) {
+              case 'SO2':
+                unit = 'mg/Nm3';
+                break;
+              case 'CO':
+                unit = 'mg/Nm3';
+                break;
+              case 'NO':
+                unit = 'mg/Nm3';
+                break;
+              case 'Dust':
+                unit = 'mg/Nm3';
+                break;
+              case 'O2':
+                unit = '%V';
+                break;
+              case 'Temperature':
+                unit = 'oC';
+                break;
+              default:
+                unit = 'Unknown Signal';
+                break;
+            }
             if (value >= setPoints[key] && !isExceedBK[key]) {
               setIsExceedBK(prevState => ({
                 ...prevState,
@@ -270,53 +305,15 @@ function App() {
                 status: 'Alarm',
                 area: 'Bach Khoa Station',
                 name: `${gas} exceeds the safe level`,
-                value: value,
+                value: `${value} ${unit}`,
                 acknowledged: false, // Thêm trạng thái acknowledged 
                 id: 'red'
               };
-            } else if (value === 'Error') {
-              let nameOfSignal = null
-              switch (key) {
-                case 'StatusTemp':
-                  nameOfSignal = 'Error Temperature Signal';
-                  break;
-                case 'StatusDust':
-                  nameOfSignal = 'Error Dust Signal';
-                  break;
-                case 'StatusSO2':
-                  nameOfSignal = 'Error SO2 Signal';
-                  break;
-                case 'StatusO2':
-                  nameOfSignal = 'Error O2 Signal';
-                  break;
-                case 'StatusCO':
-                  nameOfSignal = 'Error CO Signal';
-                  break;
-                case 'StatusNO':
-                  nameOfSignal = 'Error NO Signal';
-                  break;
-                default:
-                  nameOfSignal = 'Unknown Signal';
-                  break;
-              }
-              return {
-                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit'
-                }),
-                status: 'Alarm',
-                area: 'Bach Khoa Station',
-                name: nameOfSignal,
-                value: 'Error',
-                acknowledged: false, // Thêm trạng thái acknowledged
-                id: 'red'
-              }
             } else if (value >= 0.9 * setPoints[key] && value < setPoints[key] && !isExceedBK[key]) {
-              return {
+              setIsExceed90BK(prevState => ({
+                ...prevState,
+                [key]: true
+              })); return {
                 date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
                   day: '2-digit',
                   month: '2-digit',
@@ -328,11 +325,17 @@ function App() {
                 status: 'Alarm',
                 area: 'Bach Khoa Station',
                 name: `${gas} is higher than the 90% of safe level`,
-                value: value,
+                value: `${value} ${unit}`,
                 acknowledged: false,// Thêm trạng thái acknowledged
                 id: 'orange'
               };
             } else if (value < setPoints[key] && isExceedBK[key]) {
+              if (value >= 0.9 * setPoints[key]) {
+                setIsExceed90BK(prevState => ({
+                  ...prevState,
+                  [key]: true
+                }));
+              }
               setIsExceedBK(prevState => ({
                 ...prevState,
                 [key]: false
@@ -349,7 +352,7 @@ function App() {
                 status: 'Alarm',
                 area: 'Bach Khoa Station',
                 name: `${gas} has decreased underneath the limit`,
-                value: value,
+                value: `${value} ${unit}`,
                 acknowledged: false,// Thêm trạng thái acknowledged
                 id: 'green'
               };
@@ -366,10 +369,56 @@ function App() {
                 status: 'Alarm',
                 area: 'Bach Khoa Station',
                 name: `${gas} exceeds the safe level`,
-                value: value,
+                value: `${value} ${unit}`,
                 acknowledged: false,// Thêm trạng thái acknowledged
                 id: 'red'
               };
+            } else if (value < 0.9 * setPoints[key]) {
+              setIsExceed90BK(prevState => ({
+                ...prevState,
+                [key]: false
+              }));
+            }
+          } else if (value === 'Error') {
+            let nameOfSignal = null
+            switch (key) {
+              case 'StatusTemp':
+                nameOfSignal = 'Error Temperature Signal';
+                break;
+              case 'StatusDust':
+                nameOfSignal = 'Error Dust Signal';
+                break;
+              case 'StatusSO2':
+                nameOfSignal = 'Error SO2 Signal';
+                break;
+              case 'StatusO2':
+                nameOfSignal = 'Error O2 Signal';
+                break;
+              case 'StatusCO':
+                nameOfSignal = 'Error CO Signal';
+                break;
+              case 'StatusNO':
+                nameOfSignal = 'Error NO Signal';
+                break;
+              default:
+                nameOfSignal = 'Unknown Signal';
+                break;
+            }
+            return {
+              date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+              }),
+              status: 'Alarm',
+              area: 'Bach Khoa Station',
+              name: nameOfSignal,
+              value: 'Error',
+              acknowledged: false, // Thêm trạng thái acknowledged
+              id: 'red'
             }
           }
 
@@ -435,14 +484,22 @@ function App() {
     Temperature: false,
     Dust: false
   });
+  const [isExceed90HG, setIsExceed90HG] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
+    O2: false,
+    Temperature: false,
+    Dust: false
+  });
   useEffect(() => {
     const setPoints = {
-      SO2: 50,
-      CO: 100,
-      NO: 200,
+      SO2: 500,
+      CO: 1000,
+      NO: 850,
       O2: 150,
       Temperature: 100,
-      Dust: 500
+      Dust: 200
     }
     if (JSON.stringify(data.data2) !== JSON.stringify(previousData2)) {
       const checkAlarms2 = (data) => {
@@ -453,9 +510,36 @@ function App() {
             && key !== 'StatusSO2'
             && key !== 'StatusCO'
             && key !== 'StatusNO'
-            && key !== 'StatusO2') {
+            && key !== 'StatusO2'
+            && key !== 'O2'
+            && key !== 'Temperature') {
             const gas = key.toUpperCase();
+            let unit = null
+            switch (key) {
+              case 'SO2':
+                unit = 'mg/Nm3';
+                break;
+              case 'CO':
+                unit = 'mg/Nm3';
+                break;
+              case 'NO':
+                unit = 'mg/Nm3';
+                break;
+              case 'Dust':
+                unit = 'mg/Nm3';
+                break;
+              case 'O2':
+                unit = '%V';
+                break;
+              case 'Temperature':
+                unit = 'oC';
+                break;
+              default:
+                unit = 'Unknown Signal';
+                break;
+            }
             if (value >= setPoints[key] && !isExceedHG[key]) {
+
               setIsExceedHG(prevState => ({
                 ...prevState,
                 [key]: true
@@ -471,72 +555,14 @@ function App() {
                 status: 'Alarm',
                 area: 'Hau Giang Station',
                 name: `${gas} exceeds the safe level`,
-                value: value,
+                value: `${value} ${unit}`,
                 acknowledged: false, // Thêm trạng thái acknowledged 
                 id: 'red'
               };
-            } else if (value === 'Error') {
-              let nameOfSignal = null
-              switch (key) {
-                case 'StatusTemp':
-                  nameOfSignal = 'Error Temperature Signal';
-                  break;
-                case 'StatusDust':
-                  nameOfSignal = 'Error Dust Signal';
-                  break;
-                case 'StatusSO2':
-                  nameOfSignal = 'Error SO2 Signal';
-                  break;
-                case 'StatusO2':
-                  nameOfSignal = 'Error O2 Signal';
-                  break;
-                case 'StatusCO':
-                  nameOfSignal = 'Error CO Signal';
-                  break;
-                case 'StatusNO':
-                  nameOfSignal = 'Error NO Signal';
-                  break;
-                default:
-                  nameOfSignal = 'Unknown Signal';
-                  break;
-              }
-              return {
-                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit'
-                }),
-                status: 'Alarm',
-                area: 'Hau Giang Station',
-                name: nameOfSignal,
-                value: 'Error',
-                acknowledged: false, // Thêm trạng thái acknowledged
-                id: 'red'
-              }
             } else if (value >= 0.9 * setPoints[key] && value < setPoints[key] && !isExceedHG[key]) {
-              return {
-                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit'
-                }),
-                status: 'Alarm',
-                area: 'Hau Giang Station',
-                name: `${gas} is higher than the 90% of safe level`,
-                value: value,
-                acknowledged: false,// Thêm trạng thái acknowledged
-                id: 'orange'
-              };
-            } else if (value < setPoints[key] && isExceedHG[key]) {
-              setIsExceedHG(prevState => ({
+              setIsExceed90HG(prevState => ({
                 ...prevState,
-                [key]: false
+                [key]: true
               }));
               return {
                 date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
@@ -549,8 +575,36 @@ function App() {
                 }),
                 status: 'Alarm',
                 area: 'Hau Giang Station',
+                name: `${gas} is higher than the 90% of safe level`,
+                value: `${value} ${unit}`,
+                acknowledged: false,// Thêm trạng thái acknowledged
+                id: 'orange'
+              };
+            } else if (value < setPoints[key] && isExceedHG[key]) {
+              if (value >= 0.9 * setPoints[key]) {
+                setIsExceed90HG(prevState => ({
+                  ...prevState,
+                  [key]: true
+                }));
+              }
+              setIsExceedHG(prevState => ({
+                ...prevState,
+                [key]: false
+              }));
+
+              return {
+                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                }),
+                status: 'Alarm',
+                area: 'Hau Giang Station',
                 name: `${gas} has decreased underneath the limit`,
-                value: value,
+                value: `${value} ${unit}`,
                 acknowledged: false,// Thêm trạng thái acknowledged
                 id: 'green'
               };
@@ -567,18 +621,64 @@ function App() {
                 status: 'Alarm',
                 area: 'Hau Giang Station',
                 name: `${gas} exceeds the safe level`,
-                value: value,
+                value: `${value} ${unit}`,
                 acknowledged: false,// Thêm trạng thái acknowledged
                 id: 'red'
               };
+            } else if (value < 0.9 * setPoints[key]) {
+              setIsExceed90HG(prevState => ({
+                ...prevState,
+                [key]: false
+              }));
+            }
+          } else if (value === 'Error') {
+            let nameOfSignal = null
+            switch (key) {
+              case 'StatusTemp':
+                nameOfSignal = 'Error Temperature Signal';
+                break;
+              case 'StatusDust':
+                nameOfSignal = 'Error Dust Signal';
+                break;
+              case 'StatusSO2':
+                nameOfSignal = 'Error SO2 Signal';
+                break;
+              case 'StatusO2':
+                nameOfSignal = 'Error O2 Signal';
+                break;
+              case 'StatusCO':
+                nameOfSignal = 'Error CO Signal';
+                break;
+              case 'StatusNO':
+                nameOfSignal = 'Error NO Signal';
+                break;
+              default:
+                nameOfSignal = 'Unknown Signal';
+                break;
+            }
+            return {
+              date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+              }),
+              status: 'Alarm',
+              area: 'Hau Giang Station',
+              name: nameOfSignal,
+              value: 'Error',
+              acknowledged: false, // Thêm trạng thái acknowledged
+              id: 'red'
             }
           }
         }).filter(Boolean);
 
         const uniqueNewAlarms = newAlarms.filter(newAlarm => (
           !alarms2.some(existingAlarm => (
-            newAlarm.name === existingAlarm.name &&
-            newAlarm.value === existingAlarm.value &&
+            // newAlarm.name === existingAlarm.name &&
+            // newAlarm.value === existingAlarm.value &&
             newAlarm.date === existingAlarm.date
           ))
         ));
@@ -606,7 +706,6 @@ function App() {
       checkAlarms2(data.data2)
     }
   }, [data.data2]);
-  console.log(isExceedHG)
 
   // Lưu alarm HG mới vào db
   useEffect(() => {
@@ -633,18 +732,22 @@ function App() {
     SO2: false,
     CO: false,
     NO: false,
-    O2: false,
-    Temperature: false,
+    Dust: false
+  });
+  const [isExceed90TV, setIsExceed90TV] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
     Dust: false
   });
   useEffect(() => {
     const setPoints = {
-      SO2: 50,
-      CO: 100,
-      NO: 200,
+      SO2: 500,
+      CO: 1000,
+      NO: 850,
       O2: 150,
       Temperature: 100,
-      Dust: 500
+      Dust: 200
     }
 
     if (JSON.stringify(data.data3) !== JSON.stringify(previousData3)) {
@@ -656,8 +759,34 @@ function App() {
             && key !== 'StatusSO2'
             && key !== 'StatusCO'
             && key !== 'StatusNO'
-            && key !== 'StatusO2') {
+            && key !== 'StatusO2'
+            && key !== 'O2'
+            && key !== 'Temperature') {
             const gas = key.toUpperCase();
+            let unit = null
+            switch (key) {
+              case 'SO2':
+                unit = 'mg/Nm3';
+                break;
+              case 'CO':
+                unit = 'mg/Nm3';
+                break;
+              case 'NO':
+                unit = 'mg/Nm3';
+                break;
+              case 'Dust':
+                unit = 'mg/Nm3';
+                break;
+              case 'O2':
+                unit = '%V';
+                break;
+              case 'Temperature':
+                unit = 'oC';
+                break;
+              default:
+                unit = 'Unknown Signal';
+                break;
+            }
             if (value >= setPoints[key] && !isExceed[key]) {
               setIsExceed(prevState => ({
                 ...prevState,
@@ -674,52 +803,15 @@ function App() {
                 status: 'Alarm',
                 area: 'Tra Vinh Station',
                 name: `${gas} exceeds the safe level`,
-                value: value,
+                value: `${value} ${unit}`,
                 acknowledged: false, // Thêm trạng thái acknowledged 
                 id: 'red'
               };
-            } else if (value === 'Error') {
-              let nameOfSignal = null
-              switch (key) {
-                case 'StatusTemp':
-                  nameOfSignal = 'Error Temperature Signal';
-                  break;
-                case 'StatusDust':
-                  nameOfSignal = 'Error Dust Signal';
-                  break;
-                case 'StatusSO2':
-                  nameOfSignal = 'Error SO2 Signal';
-                  break;
-                case 'StatusO2':
-                  nameOfSignal = 'Error O2 Signal';
-                  break;
-                case 'StatusCO':
-                  nameOfSignal = 'Error CO Signal';
-                  break;
-                case 'StatusNO':
-                  nameOfSignal = 'Error NO Signal';
-                  break;
-                default:
-                  nameOfSignal = 'Unknown Signal';
-                  break;
-              }
-              return {
-                date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  second: '2-digit'
-                }),
-                status: 'Alarm',
-                area: 'Tra Vinh Station',
-                name: nameOfSignal,
-                value: 'Error',
-                acknowledged: false, // Thêm trạng thái acknowledged
-                id: 'red'
-              }
             } else if (value >= 0.9 * setPoints[key] && value < setPoints[key] && !isExceed[key]) {
+              setIsExceed90TV(prevState => ({
+                ...prevState,
+                [key]: true
+              }));
               return {
                 date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
                   day: '2-digit',
@@ -732,11 +824,17 @@ function App() {
                 status: 'Alarm',
                 area: 'Tra Vinh Station',
                 name: `${gas} is higher than the 90% of safe level`,
-                value: value,
+                value: `${value} ${unit}`,
                 acknowledged: false,// Thêm trạng thái acknowledged
                 id: 'orange'
               };
             } else if (value < setPoints[key] && isExceed[key]) {
+              if (value >= 0.9 * setPoints[key]) {
+                setIsExceed90TV(prevState => ({
+                  ...prevState,
+                  [key]: true
+                }));
+              }
               setIsExceed(prevState => ({
                 ...prevState,
                 [key]: false
@@ -753,7 +851,7 @@ function App() {
                 status: 'Alarm',
                 area: 'Tra Vinh Station',
                 name: `${gas} has decreased underneath the limit`,
-                value: value,
+                value: `${value} ${unit}`,
                 acknowledged: false,// Thêm trạng thái acknowledged
                 id: 'green'
               };
@@ -770,18 +868,64 @@ function App() {
                 status: 'Alarm',
                 area: 'Tra Vinh Station',
                 name: `${gas} exceeds the safe level`,
-                value: value,
+                value: `${value} ${unit}`,
                 acknowledged: false,// Thêm trạng thái acknowledged
                 id: 'red'
               };
+            } else if (value < 0.9 * setPoints[key]) {
+              setIsExceed90TV(prevState => ({
+                ...prevState,
+                [key]: false
+              }));
+            }
+          } else if (value === 'Error') {
+            let nameOfSignal = null
+            switch (key) {
+              case 'StatusTemp':
+                nameOfSignal = 'Error Temperature Signal';
+                break;
+              case 'StatusDust':
+                nameOfSignal = 'Error Dust Signal';
+                break;
+              case 'StatusSO2':
+                nameOfSignal = 'Error SO2 Signal';
+                break;
+              case 'StatusO2':
+                nameOfSignal = 'Error O2 Signal';
+                break;
+              case 'StatusCO':
+                nameOfSignal = 'Error CO Signal';
+                break;
+              case 'StatusNO':
+                nameOfSignal = 'Error NO Signal';
+                break;
+              default:
+                nameOfSignal = 'Unknown Signal';
+                break;
+            }
+            return {
+              date: new Date(parseInt(data.createdAt)).toLocaleString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+              }),
+              status: 'Alarm',
+              area: 'Tra Vinh Station',
+              name: nameOfSignal,
+              value: 'Error',
+              acknowledged: false, // Thêm trạng thái acknowledged
+              id: 'red'
             }
           }
         }).filter(Boolean);
 
         const uniqueNewAlarms = newAlarms.filter(newAlarm => (
           !alarms3.some(existingAlarm => (
-            newAlarm.name === existingAlarm.name &&
-            newAlarm.value === existingAlarm.value &&
+            // newAlarm.name === existingAlarm.name &&
+            // newAlarm.value === existingAlarm.value &&
             newAlarm.date === existingAlarm.date
           ))
         ));
@@ -821,6 +965,7 @@ function App() {
     updatedAlarms3.splice(index, 1);
     setAlarms3(updatedAlarms3);
   };
+
   // Data dashboard
   const newData = {
     data1: {
@@ -835,7 +980,15 @@ function App() {
       StatusSO2: data.data1.StatusSO2,
       StatusCO: data.data1.StatusCO,
       StatusNO: data.data1.StatusNO,
-      StatusO2: data.data1.StatusO2
+      StatusO2: data.data1.StatusO2,
+      Date: new Date(parseInt(data.data1.createdAt)).toLocaleString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
     },
     data2: {
       SO2: data.data2.SO2,
@@ -849,7 +1002,15 @@ function App() {
       StatusSO2: data.data2.StatusSO2,
       StatusCO: data.data2.StatusCO,
       StatusNO: data.data2.StatusNO,
-      StatusO2: data.data2.StatusO2
+      StatusO2: data.data2.StatusO2,
+      Date: new Date(parseInt(data.data1.createdAt)).toLocaleString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
     },
     data3: {
       SO2: data.data3.SO2,
@@ -863,7 +1024,15 @@ function App() {
       StatusSO2: data.data3.StatusSO2,
       StatusCO: data.data3.StatusCO,
       StatusNO: data.data3.StatusNO,
-      StatusO2: data.data3.StatusO2
+      StatusO2: data.data3.StatusO2,
+      Date: new Date(parseInt(data.data1.createdAt)).toLocaleString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
     }
   };
   // Xử lý login
@@ -904,6 +1073,7 @@ function App() {
   return (
     <Router>
       <div className='App'>
+
         <div className='app-bar'>
           <NavBar isLogged={isLoggedIn} onRemoveLogin={handleLogout} userRole={'Admin'} userName={userName} />
         </div>
@@ -920,7 +1090,7 @@ function App() {
                 alarm3={alarms3} onAcknowledgeTV={handleAcknowledgeTV} />
               </PrivateRoute>} />
               <Route path='report' element={<PrivateRoute><Report username={userName} /></PrivateRoute>} />
-              <Route path='dashboard' element={<DashBoard data1={newData.data1} data2={newData.data2} data3={newData.data3} />} />
+              <Route path='dashboard' element={<DashBoard data1={newData.data1} data2={newData.data2} data3={newData.data3} isExceedBK={isExceedBK} isExceed90BK={isExceed90BK} isExceedHG={isExceedHG} isExceed90HG={isExceed90HG} isExceedTV={isExceed} isExceed90TV={isExceed90TV} />} />
               <Route path='userauthencation' element={<PrivateRoute><User verifyEmail={email} token={token} /></PrivateRoute>} />
               <Route path='metric' element={<PrivateRoute><Metric data1={chartBK} data2={chartHG} data3={chartTV} /></PrivateRoute>} />
             </Routes>
@@ -928,6 +1098,7 @@ function App() {
         </div>
       </div >
     </Router>
+
   )
 }
 export default App

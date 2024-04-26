@@ -20,11 +20,11 @@ export const SidebarData = [
     link: '/dashboard'
   },
 
-  {
-    title: 'Maps',
-    icon: <LocationOnOutlinedIcon />,
-    link: '/maps'
-  },
+  // {
+  //   title: 'Maps',
+  //   icon: <LocationOnOutlinedIcon />,
+  //   link: '/maps'
+  // },
   {
     title: 'Alarms',
     icon: <WarningAmberOutlinedIcon />,

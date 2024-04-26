@@ -7,12 +7,12 @@ function Reportdata({ reportData }) {
       <thead >
         <tr >
           <th>Date</th>
-          <th>SO2</th>
-          <th>CO</th>
-          <th>NO</th>
-          <th>O2</th>
-          <th>Temperature</th>
-          <th>Dust</th>
+          <th>SO2 (mg/Nm3)</th>
+          <th>CO (mg/Nm3)</th>
+          <th>NO (mg/Nm3)</th>
+          <th>O2 (%V)</th>
+          <th>Temperature (oC)</th>
+          <th>Dust (mg/Nm3)</th>
           <th>Area</th>
         </tr>
       </thead>

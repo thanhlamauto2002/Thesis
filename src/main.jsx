@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import CssBaseline from '@mui/material/CssBaseline'
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles'
 // import theme from '~/theme'
-import { ToastContainer, toast } from 'react-toastify'
+import { Flip, ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -14,7 +14,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     {/* <BrowserRouter> */}
     <App />
     {/* </BrowserRouter> */}
-    <ToastContainer />
+    <ToastContainer
+      limit={4}
+    />
   </React.StrictMode>
 )
 

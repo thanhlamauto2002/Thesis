@@ -6,7 +6,7 @@ function TempGauge({ Temp }) {
     <div>
       <GaugeComponent
         type="semicircle"
-        style={{ width: '200px', height: '125px', margin: '5px', marginLeft: '-10px' }}
+        style={{ width: '220px', height: '125px', margin: '5px', marginLeft: '7px', transform: 'translate(0px, -5px)' }}
         arc={{
           width: 0.2,
           padding: 0.005,
@@ -30,7 +30,7 @@ function TempGauge({ Temp }) {
               }
             },
             {
-              limit: 60, color: '#F5CD19', showTick: true,
+              limit: 60, color: 'orange', showTick: true,
               tooltip: {
                 text: 'High temperature!'
               }
@@ -56,7 +56,7 @@ function TempGauge({ Temp }) {
         }}
         value={Temp}
         minValue={10}
-        maxValue={80} />
+        maxValue={100} />
     </div>
   )
 }

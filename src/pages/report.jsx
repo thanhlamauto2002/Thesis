@@ -106,7 +106,8 @@ const Report = ({ username }) => {
 
       // Gửi dữ liệu dataToExport lên backend
       const response = await axios.post('http://localhost:8017/v1/export', {
-        dataToExport: dataToExport
+        dataToExport: dataToExport,
+        option: selectedOption
       });
       const downloadUrl = response.data.downloadUrl;
       window.location.href = downloadUrl;

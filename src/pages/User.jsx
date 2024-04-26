@@ -176,6 +176,7 @@ function User({ verifyEmail, token }) {
     } else { setSearchResults(dataUserToSearch) }
 
   }
+  console.log('searc:', searchResults)
   useEffect(() => {
     setDataUser(searchResults)
   }, [searchResults]);

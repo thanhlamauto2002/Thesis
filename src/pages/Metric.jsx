@@ -9,11 +9,16 @@ import axios from 'axios';
 
 function Metric({ data1, data2, data3 }) {
 
-  const [selectedStation, setSelectedStation] = useState('bk');
-  const [selectedOption, setSelectedOption] = useState('current');
+  const [selectedStation, setSelectedStation] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
   const [option, setOption] = useState('today');
   const [chartData, setChartData] = useState(null)
 
+
+  useEffect(() => {
+    setSelectedStation('bk')
+    setSelectedOption('current')
+  }, []);
   useEffect(() => {
     const getData = () => {
       axios.get(`http://localhost:8017/v1/getdatachart?station=${selectedStation}&option=${option}`)

@@ -1,15 +1,10 @@
 
 import { Divider } from '@mui/material'
-import { PieChart } from '@mui/x-charts/PieChart'
 import TempGauge from '~/components/TempGauge'
-import PressComponent from './GaugeDust';
-import GaugeCo from './GaugeCo';
-import GaugeNo from './GaugeNo';
-import GaugeSo2 from './GaugeSo2';
-import GaugeO2 from './GaugeO2';
+import PressComponent from './GaugeO2';
 import Typography from '@mui/material/Typography'
 
-const CardTV = ({ data3 }) => {
+const CardTV = ({ data3, isExceedTV, isExceed90TV }) => {
   const getStatusClass = (status) => {
     if (status === 'Error') {
       return 'error';
@@ -21,6 +16,20 @@ const CardTV = ({ data3 }) => {
       return ''; // Trường hợp mặc định, bạn có thể thay đổi thành lớp CSS mặc định hoặc xử lý khác
     }
   };
+  const getColor = (gas, gas90) => {
+    if (gas) {
+      return 'red-dashboard';
+    } else if (gas90) {
+      return 'orange-dashboard ';
+    } else {
+      return 'green-dashboard ';
+    }
+  };
+  const colorCO = getColor(isExceedTV.CO, isExceed90TV.CO)
+  const colorNO = getColor(isExceedTV.NO, isExceed90TV.NO)
+  const colorSO2 = getColor(isExceedTV.SO2, isExceed90TV.SO2)
+  const colorDust = getColor(isExceedTV.Dust, isExceed90TV.Dust)
+
   const statusClass1 = getStatusClass(data3.StatusTemp);
   const statusClass2 = getStatusClass(data3.StatusDust);
   const statusClass3 = getStatusClass(data3.StatusCO);
@@ -30,35 +39,45 @@ const CardTV = ({ data3 }) => {
   return (
     <div className="card-station">
       <div className="card-header">
-        Tra Vinh Station
+        Tra Vinh Station <label>{data3.Date}</label>
       </div>
       <Divider />
       <div className="card-body">
-        <div >
+        <div className='gaugeTemp'>
           < TempGauge Temp={data3.Temperature} />
-          <Typography variant="h6" className={statusClass1} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data3.StatusTemp}</Typography> {/* Hiển thị tên của biểu đồ */}
+          <Typography variant="h6" className={statusClass1} style={{ fontSize: '1.09rem', transform: 'translate(0px, -10px)' }}>Signal Status: {data3.StatusTemp}</Typography>
         </div>
-        <div>
-          < PressComponent Dust={data3.Dust} />
-          <Typography variant="h6" className={statusClass2} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data3.StatusDust}</Typography> {/* Hiển thị tên của biểu đồ */}
+        <div className='gaugeO2'>
+          < PressComponent O2={data3.O2} />
+          <Typography variant="h6" className={statusClass2} style={{ fontSize: '1.09rem', transform: 'translate(0px, -10px)' }}>Signal Status: {data3.StatusO2}</Typography>
+        </div>
+        <div className='infoAir'>
+          <Typography variant="h5" style={{ fontWeight: 'bolder', color: 'black' }}>CO</Typography>
+          <Typography className={colorCO} variant="h5" style={{ fontSize: '1.8rem', fontWeight: 'bolder' }}>{data3.CO}</Typography>
+          <Typography variant="h6" style={{ fontSize: '1.09rem', color: 'black' }}>mg/Nm3</Typography>
+          <Typography variant="h6" className={statusClass3} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data3.StatusCO}</Typography>
 
         </div>
-        <div>
-          <GaugeCo valueCo={data3.CO} />
-          <Typography variant="h6" className={statusClass3} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data3.StatusCO}</Typography> {/* Hiển thị tên của biểu đồ */}
+        <div className='infoAir'>
+          <Typography variant="h5" style={{ fontWeight: 'bolder', color: 'black' }}>NO</Typography>
+          <Typography className={colorNO} variant="h5" style={{ fontSize: '1.8rem', fontWeight: 'bolder' }}>{data3.NO}</Typography>
+          <Typography variant="h6" style={{ fontSize: '1.09rem', color: 'black' }}>mg/Nm3</Typography>
+          <Typography variant="h6" className={statusClass4} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data3.StatusNO}</Typography>
 
         </div>
-        <div>
-          <GaugeNo valueNo={data3.NO} />
-          <Typography variant="h6" className={statusClass4} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data3.StatusNO} </Typography> {/* Hiển thị tên của biểu đồ */}
+        <div className='infoAir'>
+          <Typography variant="h5" style={{ fontWeight: 'bolder', color: 'black' }}>SO2</Typography>
+          <Typography className={colorSO2} variant="h5" style={{ fontSize: '1.8rem', fontWeight: 'bolder' }}>{data3.SO2}</Typography>
+          <Typography variant="h6" style={{ fontSize: '1.09rem', color: 'black' }}>mg/Nm3</Typography>
+          <Typography variant="h6" className={statusClass5} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data3.StatusSO2}</Typography>
+
         </div>
-        <div>
-          <GaugeSo2 valueSo2={data3.SO2} />
-          <Typography variant="h6" className={statusClass5} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data3.StatusSO2}</Typography> {/* Hiển thị tên của biểu đồ */}
-        </div>
-        <div>
-          <GaugeO2 valueO2={data3.O2} />
-          <Typography variant="h6" className={statusClass6} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data3.StatusO2}</Typography> {/* Hiển thị tên của biểu đồ */}
+        <div className='infoAir'>
+          <Typography variant="h5" style={{ fontWeight: 'bolder', color: 'black' }}>Dust</Typography>
+          <Typography className={colorDust} variant="h5" style={{ fontSize: '1.8rem', fontWeight: 'bolder' }}>{data3.Dust}</Typography>
+          <Typography variant="h6" style={{ fontSize: '1.09rem', color: 'black' }}>mg/Nm3</Typography>
+          <Typography variant="h6" className={statusClass6} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data3.StatusDust}</Typography>
+
         </div>
       </div>
     </div>

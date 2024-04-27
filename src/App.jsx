@@ -33,6 +33,8 @@ function App() {
   const [currentSocket, setCurrentSocket] = useState(null);
 
   const [data, setData] = useState({ data1: [], data2: [], data3: [] });
+  const [data1s, setData1s] = useState({ dataTerminal1: [], dataTerminal2: [], dataTerminal3: [] });
+
   useEffect(() => {
     const socket = io('http://localhost:8017/');
     socket.on('connect', () => {
@@ -51,6 +53,9 @@ function App() {
     socket.on('data', (data) => {
       setData(data);
     });
+    socket.on('data1s', (data) => {
+      setData1s(data);
+    });
     setCurrentSocket(socket)
 
     return () => {
@@ -60,7 +65,7 @@ function App() {
 
   }, []);
 
-
+  console.log('data1s: ', data1s)
   /*xử lý chart real time */
   //chartBK
   const [previousData1, setPreviousData1] = useState(() => {
@@ -173,6 +178,8 @@ function App() {
   }, [data.data2]);
   // chart TV
   const [previousData3, setPreviousData3] = useState(null);
+  const [previousData31s, setPreviousData31s] = useState(null);
+
   const [chartTV, setChartTV] = useState(() => {
     const storedDataTV = localStorage.getItem('chartRealTimeTV');
     return storedDataTV ? JSON.parse(storedDataTV) : [];
@@ -969,19 +976,19 @@ function App() {
   // Data dashboard
   const newData = {
     data1: {
-      SO2: data.data1.SO2,
-      CO: data.data1.CO,
-      NO: data.data1.NO,
-      O2: data.data1.O2,
-      Temperature: data.data1.Temperature,
-      Dust: data.data1.Dust,
-      StatusTemp: data.data1.StatusTemp,
-      StatusDust: data.data1.StatusDust,
-      StatusSO2: data.data1.StatusSO2,
-      StatusCO: data.data1.StatusCO,
-      StatusNO: data.data1.StatusNO,
-      StatusO2: data.data1.StatusO2,
-      Date: new Date(parseInt(data.data1.createdAt)).toLocaleString('en-GB', {
+      SO2: data1s.dataTerminal1.SO2,
+      CO: data1s.dataTerminal1.CO,
+      NO: data1s.dataTerminal1.NO,
+      O2: data1s.dataTerminal1.O2,
+      Temperature: data1s.dataTerminal1.Temperature,
+      Dust: data1s.dataTerminal1.Dust,
+      StatusTemp: data1s.dataTerminal1.StatusTemp,
+      StatusDust: data1s.dataTerminal1.StatusDust,
+      StatusSO2: data1s.dataTerminal1.StatusSO2,
+      StatusCO: data1s.dataTerminal1.StatusCO,
+      StatusNO: data1s.dataTerminal1.StatusNO,
+      StatusO2: data1s.dataTerminal1.StatusO2,
+      Date: new Date(parseInt(data1s.dataTerminal1.createdAt)).toLocaleString('en-GB', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
@@ -991,19 +998,19 @@ function App() {
       })
     },
     data2: {
-      SO2: data.data2.SO2,
-      CO: data.data2.CO,
-      NO: data.data2.NO,
-      O2: data.data2.O2,
-      Temperature: data.data2.Temperature,
-      Dust: data.data2.Dust,
-      StatusTemp: data.data2.StatusTemp,
-      StatusDust: data.data2.StatusDust,
-      StatusSO2: data.data2.StatusSO2,
-      StatusCO: data.data2.StatusCO,
-      StatusNO: data.data2.StatusNO,
-      StatusO2: data.data2.StatusO2,
-      Date: new Date(parseInt(data.data1.createdAt)).toLocaleString('en-GB', {
+      SO2: data1s.dataTerminal2.SO2,
+      CO: data1s.dataTerminal2.CO,
+      NO: data1s.dataTerminal2.NO,
+      O2: data1s.dataTerminal2.O2,
+      Temperature: data1s.dataTerminal2.Temperature,
+      Dust: data1s.dataTerminal2.Dust,
+      StatusTemp: data1s.dataTerminal2.StatusTemp,
+      StatusDust: data1s.dataTerminal2.StatusDust,
+      StatusSO2: data1s.dataTerminal2.StatusSO2,
+      StatusCO: data1s.dataTerminal2.StatusCO,
+      StatusNO: data1s.dataTerminal2.StatusNO,
+      StatusO2: data1s.dataTerminal2.StatusO2,
+      Date: new Date(parseInt(data1s.dataTerminal2.createdAt)).toLocaleString('en-GB', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
@@ -1013,19 +1020,19 @@ function App() {
       })
     },
     data3: {
-      SO2: data.data3.SO2,
-      CO: data.data3.CO,
-      NO: data.data3.NO,
-      O2: data.data3.O2,
-      Temperature: data.data3.Temperature,
-      Dust: data.data3.Dust,
-      StatusTemp: data.data3.StatusTemp,
-      StatusDust: data.data3.StatusDust,
-      StatusSO2: data.data3.StatusSO2,
-      StatusCO: data.data3.StatusCO,
-      StatusNO: data.data3.StatusNO,
-      StatusO2: data.data3.StatusO2,
-      Date: new Date(parseInt(data.data1.createdAt)).toLocaleString('en-GB', {
+      SO2: data1s.dataTerminal3.SO2,
+      CO: data1s.dataTerminal3.CO,
+      NO: data1s.dataTerminal3.NO,
+      O2: data1s.dataTerminal3.O2,
+      Temperature: data1s.dataTerminal3.Temperature,
+      Dust: data1s.dataTerminal3.Dust,
+      StatusTemp: data1s.dataTerminal3.StatusTemp,
+      StatusDust: data1s.dataTerminal3.StatusDust,
+      StatusSO2: data1s.dataTerminal3.StatusSO2,
+      StatusCO: data1s.dataTerminal3.StatusCO,
+      StatusNO: data1s.dataTerminal3.StatusNO,
+      StatusO2: data1s.dataTerminal3.StatusO2,
+      Date: new Date(parseInt(data1s.dataTerminal3.createdAt)).toLocaleString('en-GB', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
@@ -1035,6 +1042,218 @@ function App() {
       })
     }
   };
+  const [isExceed1sBK, setIsExceed1sBK] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
+    Dust: false
+  });
+  const [isExceed90BK1s, setIsExceed90BK1s] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
+    Dust: false
+  });
+  const [isExceed1sHG, setIsExceed1sHG] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
+    Dust: false
+  });
+  const [isExceed90HG1s, setIsExceed90HG1s] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
+    Dust: false
+  });
+  const [isExceed1sTV, setIsExceed1sTV] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
+    Dust: false
+  });
+  const [isExceed90TV1s, setIsExceed90TV1s] = useState({
+    SO2: false,
+    CO: false,
+    NO: false,
+    Dust: false
+  });
+  //terminal1
+  useEffect(() => {
+    const setPoints = {
+      SO2: 500,
+      CO: 1000,
+      NO: 850,
+      O2: 150,
+      Temperature: 100,
+      Dust: 200
+    }
+
+    Object.entries(data1s.dataTerminal1).map(([key, value]) => {
+      if (key !== 'createdAt'
+        && key !== 'StatusTemp'
+        && key !== 'StatusDust'
+        && key !== 'StatusSO2'
+        && key !== 'StatusCO'
+        && key !== 'StatusNO'
+        && key !== 'StatusO2'
+        && key !== 'O2'
+        && key !== 'Temperature') {
+        if (value >= setPoints[key] && !isExceed1sBK[key]) {
+
+          setIsExceed1sBK(prevState => ({
+            ...prevState,
+            [key]: true
+          }));
+        } else if (value >= 0.9 * setPoints[key] && value < setPoints[key] && !isExceed1sBK[key]) {
+          setIsExceed90BK1s(prevState => ({
+            ...prevState,
+            [key]: true
+          }));
+        } else if (value < setPoints[key] && isExceed1sBK[key]) {
+          if (value >= 0.9 * setPoints[key]) {
+            setIsExceed90BK1s(prevState => ({
+              ...prevState,
+              [key]: true
+            }));
+          }
+          setIsExceed1sBK(prevState => ({
+            ...prevState,
+            [key]: false
+          }));
+
+        } else if (value >= setPoints[key] && isExceed1sBK[key]) {
+
+          setIsExceed1sBK(prevState => ({
+            ...prevState,
+            [key]: true
+          }));
+        } else if (value < 0.9 * setPoints[key]) {
+          setIsExceed90BK1s(prevState => ({
+            ...prevState,
+            [key]: false
+          }));
+        }
+      }
+    })
+  }, [data1s.dataTerminal1])
+  //terminal2
+  useEffect(() => {
+    const setPoints = {
+      SO2: 500,
+      CO: 1000,
+      NO: 850,
+      O2: 150,
+      Temperature: 100,
+      Dust: 200
+    }
+    Object.entries(data1s.dataTerminal2).map(([key, value]) => {
+      if (key !== 'createdAt'
+        && key !== 'StatusTemp'
+        && key !== 'StatusDust'
+        && key !== 'StatusSO2'
+        && key !== 'StatusCO'
+        && key !== 'StatusNO'
+        && key !== 'StatusO2'
+        && key !== 'O2'
+        && key !== 'Temperature') {
+        if (value >= setPoints[key] && !isExceed1sHG[key]) {
+
+          setIsExceed1sHG(prevState => ({
+            ...prevState,
+            [key]: true
+          }));
+        } else if (value >= 0.9 * setPoints[key] && value < setPoints[key] && !isExceed1sHG[key]) {
+          setIsExceed90HG1s(prevState => ({
+            ...prevState,
+            [key]: true
+          }));
+        } else if (value < setPoints[key] && isExceed1sHG[key]) {
+          if (value >= 0.9 * setPoints[key]) {
+            setIsExceed90HG1s(prevState => ({
+              ...prevState,
+              [key]: true
+            }));
+          }
+          setIsExceed1sHG(prevState => ({
+            ...prevState,
+            [key]: false
+          }));
+
+        } else if (value >= setPoints[key] && isExceed1sHG[key]) {
+
+          setIsExceed1sHG(prevState => ({
+            ...prevState,
+            [key]: true
+          }));
+        } else if (value < 0.9 * setPoints[key]) {
+          setIsExceed90HG1s(prevState => ({
+            ...prevState,
+            [key]: false
+          }));
+        }
+      }
+    })
+  }, [data1s.dataTerminal2])
+
+  //terminal3
+  useEffect(() => {
+    const setPoints = {
+      SO2: 500,
+      CO: 1000,
+      NO: 850,
+      O2: 150,
+      Temperature: 100,
+      Dust: 200
+    }
+    Object.entries(data1s.dataTerminal3).map(([key, value]) => {
+      if (key !== 'createdAt'
+        && key !== 'StatusTemp'
+        && key !== 'StatusDust'
+        && key !== 'StatusSO2'
+        && key !== 'StatusCO'
+        && key !== 'StatusNO'
+        && key !== 'StatusO2'
+        && key !== 'O2'
+        && key !== 'Temperature') {
+        if (value >= setPoints[key] && !isExceed1sTV[key]) {
+
+          setIsExceed1sTV(prevState => ({
+            ...prevState,
+            [key]: true
+          }));
+        } else if (value >= 0.9 * setPoints[key] && value < setPoints[key] && !isExceed1sTV[key]) {
+          setIsExceed90TV1s(prevState => ({
+            ...prevState,
+            [key]: true
+          }));
+        } else if (value < setPoints[key] && isExceed1sTV[key]) {
+          if (value >= 0.9 * setPoints[key]) {
+            setIsExceed90TV1s(prevState => ({
+              ...prevState,
+              [key]: true
+            }));
+          }
+          setIsExceed1sTV(prevState => ({
+            ...prevState,
+            [key]: false
+          }));
+
+        } else if (value >= setPoints[key] && isExceed1sTV[key]) {
+
+          setIsExceed1sTV(prevState => ({
+            ...prevState,
+            [key]: true
+          }));
+        } else if (value < 0.9 * setPoints[key]) {
+          setIsExceed90TV1s(prevState => ({
+            ...prevState,
+            [key]: false
+          }));
+        }
+      }
+    })
+  }, [data1s.dataTerminal3])
   // Xử lý login
   const [token, setToken] = useState(Cookies.get('jwt') || null);
   const [isLoggedIn, setIsLoggedIn] = useState(!!token);
@@ -1090,7 +1309,7 @@ function App() {
                 alarm3={alarms3} onAcknowledgeTV={handleAcknowledgeTV} />
               </PrivateRoute>} />
               <Route path='report' element={<PrivateRoute><Report username={userName} /></PrivateRoute>} />
-              <Route path='dashboard' element={<DashBoard data1={newData.data1} data2={newData.data2} data3={newData.data3} isExceedBK={isExceedBK} isExceed90BK={isExceed90BK} isExceedHG={isExceedHG} isExceed90HG={isExceed90HG} isExceedTV={isExceed} isExceed90TV={isExceed90TV} />} />
+              <Route path='dashboard' element={<DashBoard data1={newData.data1} data2={newData.data2} data3={newData.data3} isExceedBK={isExceed1sBK} isExceed90BK={isExceed90BK1s} isExceedHG={isExceed1sHG} isExceed90HG={isExceed90HG1s} isExceedTV={isExceed1sTV} isExceed90TV={isExceed90TV1s} />} />
               <Route path='userauthencation' element={<PrivateRoute><User verifyEmail={email} token={token} /></PrivateRoute>} />
               <Route path='metric' element={<PrivateRoute><Metric data1={chartBK} data2={chartHG} data3={chartTV} /></PrivateRoute>} />
             </Routes>

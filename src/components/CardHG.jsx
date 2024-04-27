@@ -48,7 +48,7 @@ const CardHG = ({ data2, isExceedHG, isExceed90HG }) => {
         </div>
         <div className='gaugeO2'>
           < PressComponent O2={data2.O2} />
-          <Typography variant="h6" className={statusClass2} style={{ fontSize: '1.09rem', transform: 'translate(0px, -10px)' }}>Signal Status: {data2.StatusO2}</Typography>
+          <Typography variant="h6" className={statusClass6} style={{ fontSize: '1.09rem', transform: 'translate(0px, -10px)' }}>Signal Status: {data2.StatusO2}</Typography>
         </div>
         <div className='infoAir'>
           <Typography variant="h5" style={{ fontWeight: 'bolder', color: 'black' }}>CO</Typography>
@@ -75,7 +75,7 @@ const CardHG = ({ data2, isExceedHG, isExceed90HG }) => {
           <Typography variant="h5" style={{ fontWeight: 'bolder', color: 'black' }}>Dust</Typography>
           <Typography className={colorDust} variant="h5" style={{ fontSize: '1.8rem', fontWeight: 'bolder' }}>{data2.Dust}</Typography>
           <Typography variant="h6" style={{ fontSize: '1.09rem', color: 'black' }}>mg/Nm3</Typography>
-          <Typography variant="h6" className={statusClass6} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data2.StatusDust}</Typography>
+          <Typography variant="h6" className={statusClass2} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data2.StatusDust}</Typography>
 
         </div>
       </div>

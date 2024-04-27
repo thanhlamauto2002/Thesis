@@ -28,6 +28,7 @@ const CardBK = ({ data1, isExceedBK, isExceed90BK }) => {
       return 'green-dashboard ';
     }
   };
+
   const colorCO = getColor(isExceedBK.CO, isExceed90BK.CO)
   const colorNO = getColor(isExceedBK.NO, isExceed90BK.NO)
   const colorSO2 = getColor(isExceedBK.SO2, isExceed90BK.SO2)
@@ -52,7 +53,7 @@ const CardBK = ({ data1, isExceedBK, isExceed90BK }) => {
         </div>
         <div className='gaugeO2'>
           < PressComponent O2={data1.O2} />
-          <Typography variant="h6" className={statusClass2} style={{ fontSize: '1.09rem', transform: 'translate(0px, -10px)' }}>Signal Status: {data1.StatusO2}</Typography>
+          <Typography variant="h6" className={statusClass6} style={{ fontSize: '1.09rem', transform: 'translate(0px, -10px)' }}>Signal Status: {data1.StatusO2}</Typography>
         </div>
         <div className='infoAir'>
           <Typography variant="h5" style={{ fontWeight: 'bolder', color: 'black' }}>CO</Typography>
@@ -79,7 +80,7 @@ const CardBK = ({ data1, isExceedBK, isExceed90BK }) => {
           <Typography variant="h5" style={{ fontWeight: 'bolder', color: 'black' }}>Dust</Typography>
           <Typography className={colorDust} variant="h5" style={{ fontSize: '1.8rem', fontWeight: 'bolder' }}>{data1.Dust}</Typography>
           <Typography variant="h6" style={{ fontSize: '1.09rem', color: 'black' }}>mg/Nm3</Typography>
-          <Typography variant="h6" className={statusClass6} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data1.StatusDust}</Typography>
+          <Typography variant="h6" className={statusClass2} style={{ fontSize: '1.09rem', marginTop: '16px' }}>Signal Status: {data1.StatusDust}</Typography>
 
         </div>
       </div>

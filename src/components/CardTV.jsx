@@ -39,7 +39,7 @@ const CardTV = ({ data3, isExceedTV, isExceed90TV }) => {
   return (
     <div className="card-station">
       <div className="card-header">
-        Tra Vinh Station <label>{data3.Date}</label>
+        Tra Vinh Station <label> Status: {data3.StatusConnect}</label> <label>{data3.Date}</label>
       </div>
       <Divider />
       <div className="card-body">

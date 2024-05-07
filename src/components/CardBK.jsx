@@ -43,7 +43,7 @@ const CardBK = ({ data1, isExceedBK, isExceed90BK }) => {
   return (
     <div className="card-station">
       <div className="card-header">
-        Bach Khoa Station <label>{data1.Date}</label>
+        Bach Khoa Station <label> Status: {data1.StatusConnect}</label> <label>{data1.Date}</label>
       </div>
       <Divider />
       <div className="card-body">

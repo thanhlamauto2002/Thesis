@@ -22,6 +22,7 @@ import Report from '~/pages/Report'
 import DashBoard from '~/pages/DashBoard'
 import User from '~/pages/User'
 import Metric from '~/pages/Metric'
+import Setting from './pages/Setting'
 import Cookies from 'js-cookie';
 import io from 'socket.io-client'
 import PrivateRoute from './routes/PrivateRoute'
@@ -45,6 +46,10 @@ function App() {
       // Xử lý dữ liệu nhận được từ máy chủ ở đây
     });
 
+    socket.on('disconnectOPC', message => {
+      console.log('Message received:', message);
+      toast.error(message, { theme: 'colored' })
+    });
     socket.emit('clientEvent', 'Hello from client');
 
     const interval = setInterval(() => {
@@ -65,7 +70,6 @@ function App() {
 
   }, []);
 
-  console.log('data1s: ', data1s)
   /*xử lý chart real time */
   //chartBK
   const [previousData1, setPreviousData1] = useState(() => {
@@ -433,8 +437,8 @@ function App() {
 
         const uniqueNewAlarms = newAlarms.filter(newAlarm => (
           !alarms1.some(existingAlarm => (
-            newAlarm.name === existingAlarm.name &&
-            newAlarm.value === existingAlarm.value &&
+            // newAlarm.name === existingAlarm.name &&
+            // newAlarm.value === existingAlarm.value &&
             newAlarm.date === existingAlarm.date
           ))
         ));
@@ -988,6 +992,8 @@ function App() {
       StatusCO: data1s.dataTerminal1.StatusCO,
       StatusNO: data1s.dataTerminal1.StatusNO,
       StatusO2: data1s.dataTerminal1.StatusO2,
+      StatusConnect: data1s.dataTerminal1.StatusConnect,
+
       Date: new Date(parseInt(data1s.dataTerminal1.createdAt)).toLocaleString('en-GB', {
         day: '2-digit',
         month: '2-digit',
@@ -1010,6 +1016,7 @@ function App() {
       StatusCO: data1s.dataTerminal2.StatusCO,
       StatusNO: data1s.dataTerminal2.StatusNO,
       StatusO2: data1s.dataTerminal2.StatusO2,
+      StatusConnect: data1s.dataTerminal2.StatusConnect,
       Date: new Date(parseInt(data1s.dataTerminal2.createdAt)).toLocaleString('en-GB', {
         day: '2-digit',
         month: '2-digit',
@@ -1032,6 +1039,7 @@ function App() {
       StatusCO: data1s.dataTerminal3.StatusCO,
       StatusNO: data1s.dataTerminal3.StatusNO,
       StatusO2: data1s.dataTerminal3.StatusO2,
+      StatusConnect: data1s.dataTerminal3.StatusConnect,
       Date: new Date(parseInt(data1s.dataTerminal3.createdAt)).toLocaleString('en-GB', {
         day: '2-digit',
         month: '2-digit',
@@ -1312,6 +1320,8 @@ function App() {
               <Route path='dashboard' element={<DashBoard data1={newData.data1} data2={newData.data2} data3={newData.data3} isExceedBK={isExceed1sBK} isExceed90BK={isExceed90BK1s} isExceedHG={isExceed1sHG} isExceed90HG={isExceed90HG1s} isExceedTV={isExceed1sTV} isExceed90TV={isExceed90TV1s} />} />
               <Route path='userauthencation' element={<PrivateRoute><User verifyEmail={email} token={token} /></PrivateRoute>} />
               <Route path='metric' element={<PrivateRoute><Metric data1={chartBK} data2={chartHG} data3={chartTV} /></PrivateRoute>} />
+              <Route path='setting' element={<PrivateRoute><Setting /></PrivateRoute>} />
+
             </Routes>
           </div>
         </div>

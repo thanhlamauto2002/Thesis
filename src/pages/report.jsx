@@ -15,7 +15,6 @@ const Report = ({ username }) => {
   const [isSubmited, setIsSubmited] = useState(false);
 
 
-
   const handleSubmit = () => {
     // Truy xuất dữ liệu từ MongoDB khi nhấn nút Submit
     const startObject = new Date(startDate);

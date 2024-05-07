@@ -38,7 +38,7 @@ const CardHG = ({ data2, isExceedHG, isExceed90HG }) => {
   return (
     <div className="card-station">
       <div className="card-header">
-        Hau Giang Station <label>{data2.Date}</label>
+        Hau Giang Station <label> Status: {data2.StatusConnect}</label><label>{data2.Date}</label>
       </div>
       <Divider />
       <div className="card-body">

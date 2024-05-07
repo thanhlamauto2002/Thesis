@@ -115,7 +115,6 @@ function User({ verifyEmail, token }) {
         console.log(response.data.EM)
         if (response.data.success) {
           setIsCreated(true)
-          console.log('created: ', isCreated)
           toast.success('Created Successfully', { draggable: false })
           handleFormClose()
         }
@@ -219,7 +218,8 @@ function User({ verifyEmail, token }) {
                   value={phone}
                   onChange={() => setPhone(event.target.value)}
                   required />
-                <input type='pass'
+                <input type='password'
+                  style={{ textAlign: 'left' }}
                   placeholder='Password'
                   value={password}
                   onChange={() => setPassWord(event.target.value)}

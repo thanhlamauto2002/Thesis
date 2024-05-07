@@ -8,6 +8,7 @@ import AdfScannerOutlinedIcon from '@mui/icons-material/AdfScannerOutlined';
 import FactoryOutlinedIcon from '@mui/icons-material/FactoryOutlined';
 import SsidChartOutlinedIcon from '@mui/icons-material/SsidChartOutlined';
 import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 export const SidebarData = [
   {
     title: 'Home',
@@ -26,25 +27,30 @@ export const SidebarData = [
   //   link: '/maps'
   // },
   {
-    title: 'Alarms',
+    title: 'Alarm',
     icon: <WarningAmberOutlinedIcon />,
     link: '/alarm'
   },
   {
-    title: 'Trends',
+    title: 'Trend',
     icon: < SsidChartOutlinedIcon />,
     link: '/metric'
   },
   {
-    title: 'Reports',
+    title: 'Report',
     icon: <AdfScannerOutlinedIcon />,
     link: '/report'
   },
 
   {
-    title: 'Users',
+    title: 'User',
     icon: < PeopleAltOutlinedIcon />,
     link: '/userauthencation'
+  },
+  {
+    title: 'Setting',
+    icon: < SettingsOutlinedIcon />,
+    link: '/setting'
   },
 ]
 

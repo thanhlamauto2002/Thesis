@@ -3,6 +3,7 @@
   background-image: url('~/assets/background-cong-nge.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  overflow: scroll;
 }
 
 .setting-title-bar {
@@ -69,23 +70,29 @@
 }
 
 input[type="text"] {
-  height: 35px;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  height: 44px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   width: 150px;
   text-align: center;
   border-radius: 5px;
-  border: 2px solid black;
+  border: 1px solid black;
   font-size: 15px;
 }
 
 button.add-node {
-  height: 35px;
+  height: 44px;
   border-radius: 5px;
   transform: translateX(476px);
+  font-size: 15px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  background-color: #2F4050;
+  border: 1px solid black;
+
+
 }
 
 button.remove-node {
-  height: 35px;
+  height: 44px;
   border-radius: 5px;
   padding: 8px;
   border: 1px solid black;
@@ -93,10 +100,12 @@ button.remove-node {
   background-color: #2F4050;
   color: white;
   border-radius: 5px;
+  font-size: 15px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 button.connect-button {
-  height: 35px;
+  height: 44px;
   border-radius: 5px;
   border: 1px solid black;
   background-color: #2F4050;
@@ -105,6 +114,19 @@ button.connect-button {
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 15px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+button.connect-button:hover {
+  cursor: pointer;
+}
+
+button.remove-node:hover {
+  cursor: pointer;
+}
+
+button.add-node:hover {
+  cursor: pointer;
 }
 
 .label-ip {
@@ -122,4 +144,55 @@ button.connect-button {
   align-items: center;
   padding: 2px;
   margin-left: 110px;
+}
+
+.setting-row-station {
+  color: black;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid black;
+  height: 47px;
+}
+
+.setting-row-station:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}
+
+
+
+.setting-option-list {
+  width: 100%;
+  height: 48px;
+  list-style-type: none;
+  margin: 0%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: medium;
+  padding: 0;
+  margin-left: 80px;
+}
+
+.setting-option-list #active {
+  background-color: cadetblue;
+  border: 1px solid #ebebeb;
+  border-radius: 5px;
+}
+
+.select-station-setting {
+  height: 44px;
+  border-radius: 5px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  width: 200px;
+  margin-left: 10px;
+  font-size: 16px;
+  background-color: lightblue;
+  margin-right: 2px;
+  transform: translateX(236px);
+}
+
+.select-station-setting:hover {
+  cursor: pointer;
 }

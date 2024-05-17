@@ -110,3 +110,13 @@ button:disabled {
 input[type="password"] {
   text-align: center;
 }
+
+.email-login {
+  height: 40px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  width: 200px;
+  text-align: center;
+  border-radius: 5px;
+  border: 2px solid black;
+  font-size: 15px;
+}

@@ -52,5 +52,10 @@ export const SidebarData = [
     icon: < SettingsOutlinedIcon />,
     link: '/setting'
   },
+  // {
+  //   title: 'Test',
+  //   icon: < SettingsOutlinedIcon />,
+  //   link: '/test'
+  // },
 ]
 

@@ -1,0 +1,101 @@
+.report-bar {
+  display: flex;
+  align-items: center;
+  /* background-color: #2F4050; */
+  /* border: 1px solid black; */
+  /* border-radius: 4px; */
+  height: 48px;
+  text-align: center;
+  justify-content: center;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+
+  background-color: #ebebeb;
+}
+
+.report-container {
+  height: 100%;
+  margin-bottom: 10px;
+}
+
+.choose-option {
+  width: 168px;
+  height: 44px;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.choose-gas {
+  width: 168px;
+  height: 44px;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.choose-station {
+  width: 168px;
+  height: 44px;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.choose-option-detail {
+  width: 168px;
+  height: 44px;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.report-bar .submit {
+  background-color: white;
+  margin-left: 20px;
+  color: black;
+  border: 1px solid black;
+  height: 39px;
+  transform: translateX(100px);
+}
+
+.report-bar .export {
+  margin-left: 5px;
+  color: black;
+  border: 1px solid black;
+  height: 39px;
+  background-color: white;
+  transform: translateX(100px);
+
+}
+
+
+
+input[type="text"] {
+  height: 44px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  width: 150px;
+  text-align: center;
+  border-radius: 5px;
+  border: 2px solid black;
+  font-size: 15px;
+}

@@ -50,8 +50,8 @@ const Login1 = ({ onLoginSuccess }) => {
         <form onSubmit={handleSubmit} action="">
           <h1>Login </h1>
           <div className='input-box'>
-            <input type='text'
-              placeholder='Username'
+            <input className='email-login'
+              placeholder='Email'
               value={email}
               onChange={() => setEmail(event.target.value)}
               required />

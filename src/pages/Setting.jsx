@@ -1,14 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Setting.css';
 import { SettingOptionData } from './SettingOptionData';
 import axios from 'axios';
+import io from 'socket.io-client';
+import { toast } from 'react-toastify'
 
 function Setting() {
+
+  const [stations, setStations] = useState([]);
+  const [stationList, setStationList] = useState([]);
   const [selectedStation, setSelectedStation] = useState('');
   const [selectedOption, setSelectedOption] = useState('newstation');
   const [iPAddress, setIpAddress] = useState('');
   const [stationName, setStationName] = useState('');
   const [nodes, setNodes] = useState([]);
+  console.log(selectedOption)
+  console.log(stations)
+
+
+
+  useEffect(() => {
+    const socket = io('http://localhost:8017');
+
+    socket.on('connectionError', message => {
+      console.log('Message received:', message);
+      toast.error(message, { draggable: false })
+
+
+    });
+    socket.on('connectionSuccess', message => {
+      console.log('Message received:', message);
+      toast.success(message, { draggable: false })
+
+
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+  useEffect(() => {
+
+    const getData = () => {
+      axios.get('http://localhost:8017/v1/liststation/get')
+        .then(response => {
+          setStations(response.data);
+          const extractedStations = response.data.map(item => item.Station.trim());
+          setStationList(extractedStations);
+
+        })
+        .catch(error => {
+          console.error('Error fetching report data:', error);
+        });
+
+    }
+    getData()
+  }, []);
 
   const handleChangeStation = (event) => {
     setSelectedStation(event.target.value);
@@ -54,12 +101,12 @@ function Setting() {
         <label className='setting-title'>Configure OPC UA Connection</label>
       </div>
       <div className='metric-option'>
-        <ul className='option-list'>
+        <ul className='setting-option-list'>
           {SettingOptionData.map((val1, key) => {
             return (
               <li
                 key={key}
-                className='row-station'
+                className='setting-row-station'
                 id={selectedOption == val1.id ? 'active' : ''}
                 onClick={() => handleClickOption(val1.id)}>
                 <div id='title'>{val1.title}</div>
@@ -69,7 +116,7 @@ function Setting() {
           )}
         </ul>
       </div>
-      <form onSubmit={handleSubmit}>
+      {selectedOption === 'newstation' && <form onSubmit={handleSubmit}>
         <div className='setting-ip'>
           <label className='label-ip' htmlFor='ipAddress'>IP of Server:</label>
           <input
@@ -136,7 +183,17 @@ function Setting() {
           ))}
         </div>
         <button className='connect-button' type='submit'>Connect</button>
-      </form>
+      </form>}
+      {selectedOption === 'existconnection' &&
+        <select value={selectedStation} onChange={handleChangeStation} className='select-station-setting'>
+          {stationList.map((station, index) => (
+            <option key={index} value={station}>{station}</option>
+          ))}
+        </select>
+
+
+
+      }
     </div>
   );
 }

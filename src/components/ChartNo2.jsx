@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography'
 
 
 const ChartNo2 = ({ data }) => {
-  const setPoint = 50
   const [chartData, setChartData] = useState([]);
   useEffect(() => {
     const validData = data.filter(item => typeof item.time !== 'undefined' && typeof item.value !== 'undefined');

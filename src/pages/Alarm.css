@@ -1,0 +1,30 @@
+.alarm-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.alarm-table th,
+.alarm-table td {
+  border: 1px solid black;
+  text-align: center;
+}
+
+.alarm-table tr {
+  height: 40px;
+}
+
+.alarm-table th {
+  background-color: #f2f2f2;
+  height: 20px;
+}
+
+
+
+.alarm-table tr:hover {
+  background-color: darkgoldenrod;
+  cursor: pointer;
+}
+
+thead.table-head {
+  height: 40px;
+}

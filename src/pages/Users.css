@@ -215,3 +215,10 @@ svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.circle.css-i4bv87-MuiSvgIcon-root 
 #white-color {
   color: white;
 }
+
+.user-container {
+  background-image: url('~/assets/background-cong-nge.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+}

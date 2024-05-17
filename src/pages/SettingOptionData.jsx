@@ -5,6 +5,6 @@ export const SettingOptionData = [
   },
   {
     title: 'View existing connection',
-    id: 'today'
+    id: 'existconnection'
   }
 ]

@@ -23,6 +23,7 @@ import DashBoard from '~/pages/DashBoard'
 import User from '~/pages/User'
 import Metric from '~/pages/Metric'
 import Setting from './pages/Setting'
+import Test from './pages/Test'
 import Cookies from 'js-cookie';
 import io from 'socket.io-client'
 import PrivateRoute from './routes/PrivateRoute'
@@ -41,10 +42,7 @@ function App() {
     socket.on('connect', () => {
       console.log('Connected to server');
     });
-    socket.on('message', message => {
-      console.log('Message received:', message);
-      // Xử lý dữ liệu nhận được từ máy chủ ở đây
-    });
+
 
     socket.on('disconnectOPC', message => {
       console.log('Message received:', message);
@@ -1317,11 +1315,11 @@ function App() {
                 alarm3={alarms3} onAcknowledgeTV={handleAcknowledgeTV} />
               </PrivateRoute>} />
               <Route path='report' element={<PrivateRoute><Report username={userName} /></PrivateRoute>} />
-              <Route path='dashboard' element={<DashBoard data1={newData.data1} data2={newData.data2} data3={newData.data3} isExceedBK={isExceed1sBK} isExceed90BK={isExceed90BK1s} isExceedHG={isExceed1sHG} isExceed90HG={isExceed90HG1s} isExceedTV={isExceed1sTV} isExceed90TV={isExceed90TV1s} />} />
+              <Route path='dashboard' element={<DashBoard />} />
               <Route path='userauthencation' element={<PrivateRoute><User verifyEmail={email} token={token} /></PrivateRoute>} />
               <Route path='metric' element={<PrivateRoute><Metric data1={chartBK} data2={chartHG} data3={chartTV} /></PrivateRoute>} />
               <Route path='setting' element={<PrivateRoute><Setting /></PrivateRoute>} />
-
+              <Route path='test' element={<PrivateRoute><Test /></PrivateRoute>} />
             </Routes>
           </div>
         </div>

@@ -7,6 +7,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import CircleIcon from '@mui/icons-material/Circle';
+import Checklist from '~/components/Checklist';
 function User({ verifyEmail, token }) {
   //đóng mở 2 form
   const [showForm, setShowForm] = useState(false);
@@ -34,6 +35,35 @@ function User({ verifyEmail, token }) {
   //search
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [stations, setStations] = useState([]);
+  // authorize
+  const [showChecklist, setShowChecklist] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [permissions, setPermissions] = useState([]);
+  const [userPermissions, setUserPermissions] = useState({});
+
+  useEffect(() => {
+    const getData = () => {
+      axios.get('http://localhost:8017/v1/liststation/get')
+        .then(response => {
+          const extractedStations = response.data.map(item => item.Station.trim());
+          setStations(extractedStations);
+
+        })
+        .catch(error => {
+          console.error('Error fetching report data:', error);
+        });
+
+    }
+    getData()
+    axios.get('http://localhost:8017/v1/users/getPermissions')
+      .then(response => {
+        setUserPermissions(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching permissions data:', error);
+      });
+  }, []);
   useEffect(() => {
     axios.get('http://localhost:8017/v1/users/getalluser')
       .then(response => {
@@ -43,6 +73,7 @@ function User({ verifyEmail, token }) {
       .catch(error => {
         console.error('Error fetching report data:', error);
       });
+
     setIsCreated(false)
     setIsDeleted(false)
     setIsEdited(false)
@@ -179,6 +210,55 @@ function User({ verifyEmail, token }) {
   useEffect(() => {
     setDataUser(searchResults)
   }, [searchResults]);
+  const Checklist = ({ stations, permissions, onChange }) => {
+    const handleCheckboxChange = (station) => {
+      const updatedPermissions = permissions.includes(station)
+        ? permissions.filter((p) => p !== station)
+        : [...permissions, station];
+      onChange(updatedPermissions);
+    };
+
+    return (
+      <div className="checklist">
+        {stations.map((station) => (
+          <label key={station}>
+            <input
+              type="checkbox"
+              checked={permissions.includes(station)}
+              onChange={() => handleCheckboxChange(station)}
+            />
+            {station}
+          </label>
+        ))}
+      </div>
+    );
+  };
+  const handleAuthorizedClick = (user) => {
+    setSelectedUser(user);
+    setPermissions(userPermissions[user.email] || []);
+    setShowChecklist(true);
+  };
+
+  const handleSavePermissions = () => {
+    const updatedUserPermissions = { ...userPermissions, [selectedUser.email]: permissions };
+    setUserPermissions(updatedUserPermissions);
+
+    axios.post('http://localhost:8017/v1/users/updatePermissions', {
+      email: selectedUser.email,
+      permissions: permissions,
+    })
+      .then(response => {
+        toast.success('Quyền đã được cập nhật thành công', { draggable: false });
+      })
+      .catch(error => {
+        console.error('Lỗi khi cập nhật quyền:', error);
+        toast.error('Cập nhật quyền thất bại', { draggable: false });
+      });
+
+    setShowChecklist(false);
+    setSelectedUser(null);
+  };
+  console.log('permission: ', userPermissions)
   return (
     <div className='user-container'>
       <div className='user-management'>
@@ -282,6 +362,7 @@ function User({ verifyEmail, token }) {
               <th>Email</th>
               <th>Phone</th>
               <th>Role</th>
+              <th>Authorized</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -292,6 +373,15 @@ function User({ verifyEmail, token }) {
                 <td>{item.email}</td>
                 <td>{item.phone}</td>
                 <td>{item.role}</td>
+                <td>     <span onClick={() => handleAuthorizedClick(item)}>
+                  {userPermissions.find(userPermission => userPermission.email === item.email) ?
+                    userPermissions.find(userPermission => userPermission.email === item.email).permissions.map((permission, index) => (
+                      <span key={index}>{index > 0 ? ', ' : ''}{permission}</span>
+                    ))
+                    :
+                    'Nhấn để phân quyền'
+                  }
+                </span></td>
                 <td className='status-user'>
                   <CircleIcon className='circle' id={item.status === 'Online' ? 'green-color' : 'white-color'} />
                   {item.status}
@@ -303,6 +393,16 @@ function User({ verifyEmail, token }) {
           </tbody>
         </table>
       </div>
+      {showChecklist && (
+        <div className='modal-overlay'>
+          <div className='modal-content'>
+            <h2>Phân quyền cho người dùng: {selectedUser.username}</h2>
+            <Checklist stations={stations} permissions={permissions} onChange={setPermissions} />
+            <button type='button' className='btn-cancel-checklist' onClick={() => setShowChecklist(false)}>Cancel</button>
+            <button type='button' className='btn-create-checklist' onClick={handleSavePermissions}>Save</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -27,8 +27,10 @@ import Test from './pages/Test'
 import Cookies from 'js-cookie';
 import io from 'socket.io-client'
 import PrivateRoute from './routes/PrivateRoute'
+import AdminRoute from './routes/AdminRoute'
 import axios from 'axios';
 import { Flip, ToastContainer, toast } from 'react-toastify'
+import { CloseFullscreen } from '@mui/icons-material'
 
 function App() {
 
@@ -48,6 +50,13 @@ function App() {
       console.log('Message received:', message);
       toast.error(message, { theme: 'colored' })
     });
+
+    // socket.on('connectionLost', message => {
+    //   console.log('Message received:', message);
+    //   // toast.error(message, { theme: 'colored' })
+    // });
+
+
     socket.emit('clientEvent', 'Hello from client');
 
     const interval = setInterval(() => {
@@ -1262,8 +1271,11 @@ function App() {
   }, [data1s.dataTerminal3])
   // Xử lý login
   const [token, setToken] = useState(Cookies.get('jwt') || null);
-  const [isLoggedIn, setIsLoggedIn] = useState(!!token);
+  const [isLoggedIn, setIsLoggedIn] = useState(!token);
   const [userName, setUserName] = useState('')
+  const [Permissions, setPermissions] = useState('')
+  console.log(Permissions)
+
   const handleLoginSuccess = (accessToken) => {
     Cookies.set('jwt', accessToken, { expires: 7 });
     setToken(accessToken);
@@ -1277,6 +1289,9 @@ function App() {
 
   };
   const [email, setEmail] = useState('')
+  console.log('permis: ', Permissions
+
+  )
   useEffect(() => {
     // Kiểm tra xem người dùng đã đăng nhập chưa (ví dụ: kiểm tra cookie)
     if (token) {
@@ -1288,12 +1303,12 @@ function App() {
           // Handle response from the backend
           setUserName(response.data.username)
           setEmail(response.data.email)
+          setPermissions(response.data.userPermission)
         })
     } else {
       setIsLoggedIn(false); // Nếu không có token, đánh dấu là chưa đăng nhập
     }
   }, [token])
-
 
   return (
     <Router>
@@ -1309,17 +1324,13 @@ function App() {
               <Route path='/' element={<Home />} />
               <Route path='maps' element={<PrivateRoute><Map /></PrivateRoute>} />
               <Route path='login' element={<Login1 onLoginSuccess={handleLoginSuccess} />} />
-              <Route path='alarm' element={<PrivateRoute><Alarm
-                alarm1={alarms1} onAcknowledgeBK={handleAcknowledgeBK}
-                alarm2={alarms2} onAcknowledgeHG={handleAcknowledgeHG}
-                alarm3={alarms3} onAcknowledgeTV={handleAcknowledgeTV} />
-              </PrivateRoute>} />
-              <Route path='report' element={<PrivateRoute><Report username={userName} /></PrivateRoute>} />
-              <Route path='dashboard' element={<DashBoard />} />
-              <Route path='userauthencation' element={<PrivateRoute><User verifyEmail={email} token={token} /></PrivateRoute>} />
-              <Route path='metric' element={<PrivateRoute><Metric data1={chartBK} data2={chartHG} data3={chartTV} /></PrivateRoute>} />
-              <Route path='setting' element={<PrivateRoute><Setting /></PrivateRoute>} />
-              <Route path='test' element={<PrivateRoute><Test /></PrivateRoute>} />
+              <Route path='alarm' element={<PrivateRoute><Alarm token={Permissions} /> </PrivateRoute>} />
+              <Route path='report' element={<PrivateRoute><Report username={userName} token={Permissions} /></PrivateRoute>} />
+              <Route path='dashboard' element={<DashBoard token={token} />} />
+              <Route path='userauthencation' element={<AdminRoute><User verifyEmail={email} token={token} /></AdminRoute>} />
+              <Route path='metric' element={<PrivateRoute><Metric data1={chartBK} data2={chartHG} data3={chartTV} token={Permissions} /></PrivateRoute>} />
+              <Route path='setting' element={<PrivateRoute><Setting /></PrivateRoute>} token={Permissions} />
+              <Route path='test' element={<PrivateRoute><Test /></PrivateRoute>} token={Permissions} />
             </Routes>
           </div>
         </div>

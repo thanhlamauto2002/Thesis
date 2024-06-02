@@ -3,14 +3,19 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import './Alarm.css'
 import DoneOutlineOutlinedIcon from '@mui/icons-material/DoneOutlineOutlined';
-function Alarm() {
-  const [selectedStation, setSelectedStation] = useState(null);
+import { toast } from 'react-toastify'
+
+function Alarm({ token }) {
+  const [selectedStation, setSelectedStation] = useState('');
   const [stations, setStations] = useState([]);
+  const [showUnauthorizedToast, setShowUnauthorizedToast] = useState(false);
+
   const [alarmData, setAlarmData] = useState(() => {
     // Khởi tạo alarmData từ localStorage nếu có, nếu không thì là một đối tượng trống
     const storedAlarmData = localStorage.getItem('alarmData');
     return storedAlarmData ? JSON.parse(storedAlarmData) : {};
   });
+  console.log('token', token)
 
   useEffect(() => {
     // Lưu alarmData vào localStorage với key là 'alarmData'
@@ -112,42 +117,52 @@ function Alarm() {
     // Lưu dữ liệu mới vào localStorage
     localStorage.setItem('alarmData', JSON.stringify(updatedAlarmData));
   };
-
+  console.log('select', selectedStation)
   const renderAlarmTable = () => {
-    if (!selectedStation) {
+    console.log(token)
+    console.log(token.permissions)
+    if (!selectedStation)
+      return null
+    console.log(!token.permissions.includes(selectedStation))
+
+    if (!token.permissions.includes(selectedStation)) {
+      if (!showUnauthorizedToast) {
+        toast.warning(`You are not authorized for ${selectedStation}`, { draggable: false });
+        setShowUnauthorizedToast(true);
+      }
       return null;
+    } else {
+      const alarms = alarmData[selectedStation] || {};
+
+      return (
+        <table className='alarm-table'>
+          <thead className='table-head'>
+            <tr>
+              <th>Parameter</th>
+              <th>Value</th>
+              <th>Setpoint</th>
+              <th>Time</th>
+              <th>Acknowledge</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.keys(alarms).map(parameterName =>
+              alarms[parameterName].alarms.map((alarm, index) => (
+                <tr key={index}>
+                  <td>{alarm.parameterName}</td>
+                  <td>{alarm.value}</td>
+                  <td>{alarm.setpoint}</td>
+                  <td>{new Date(alarm.timestamp).toLocaleString()}</td>
+                  <td><DoneOutlineOutlinedIcon onClick={() => handleAcknowledgeAlarm(selectedStation, parameterName, alarm.timestamp)}
+                    style={{ cursor: 'pointer' }} /></td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      );
     }
-
-    const alarms = alarmData[selectedStation] || {};
-
-    return (
-      <table className='alarm-table'>
-        <thead className='table-head'>
-          <tr>
-            <th>Parameter</th>
-            <th>Value</th>
-            <th>Setpoint</th>
-            <th>Time</th>
-            <th>Acknowledge</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.keys(alarms).map(parameterName =>
-            alarms[parameterName].alarms.map((alarm, index) => (
-              <tr key={index}>
-                <td>{alarm.parameterName}</td>
-                <td>{alarm.value}</td>
-                <td>{alarm.setpoint}</td>
-                <td>{new Date(alarm.timestamp).toLocaleString()}</td>
-                <td><DoneOutlineOutlinedIcon onClick={() => handleAcknowledgeAlarm(selectedStation, parameterName, alarm.timestamp)}
-                  style={{ cursor: 'pointer' }} /></td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-    );
-  };
+  }
 
   return (
     <div className="alarm-box">
@@ -157,7 +172,11 @@ function Alarm() {
             <li
               key={index}
               className={selectedStation === station ? 'active row-alarm' : 'row-alarm'}
-              onClick={() => setSelectedStation(station)}
+              onClick={() => {
+                setSelectedStation(station);
+                setShowUnauthorizedToast(false);
+              }
+              }
             >
               <div id="icon-alarm">{/* Add icon if needed */}</div>
               <div id="title-alarm">{station}</div>
@@ -166,7 +185,9 @@ function Alarm() {
         </ul>
       </div>
       <div className="alarm-main">
-        {renderAlarmTable()}
+        {
+          renderAlarmTable()
+        }
       </div>
     </div>
   );

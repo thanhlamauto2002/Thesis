@@ -87,6 +87,7 @@ function Setting() {
     event.preventDefault();
     console.log(nodes); // In ra để kiểm tra
     const response = await axios.post('http://localhost:8017/v1/createopcserver', {
+      FirstConnect: 1,
       IP: iPAddress,
       Station: stationName,
       nodes: nodes
@@ -176,7 +177,7 @@ function Setting() {
                 placeholder=''
                 value={node.setpoint}
                 onChange={(event) => handleNodeChange(index, 'setpoint', event.target.value)}
-                required
+
               />
               <button className='remove-node' type='button' onClick={() => handleRemoveNode(index)}>Remove Node</button>
             </div>

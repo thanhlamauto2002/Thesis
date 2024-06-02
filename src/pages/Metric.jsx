@@ -4,16 +4,17 @@ import './Metric.css'
 import { MetricOptionData } from '~/components/MetricOptionData'
 import io from 'socket.io-client';
 import ChartComponent from '~/components/ChartComponent'
+import { toast } from 'react-toastify'
 
-function Metric() {
+function Metric({ token }) {
   const [stationData, setStationData] = useState({});
   const [chartData, setChartData] = useState(null)
   const [stations, setStations] = useState([]);
   const [selectedStation, setSelectedStation] = useState('Choose Station');
   const [selectedOption, setSelectedOption] = useState('');
   const [option, setOption] = useState('today');
+  const [previousStation, setPreviousStation] = useState('Choose Station');
 
-  console.log('option', selectedOption)
 
   useEffect(() => {
     const socket = io('http://localhost:8017'); // Thay đổi địa chỉ máy chủ và cổng tùy vào cài đặt của bạn
@@ -40,8 +41,38 @@ function Metric() {
     }
     getData()
   }, []);
+  console.log(token)
+  console.log('option', selectedOption)
+  useEffect(() => {
+    const socket = io('http://localhost:8017'); // Thay đổi địa chỉ máy chủ và cổng tùy vào cài đặt của bạn
+
+    socket.on('opcData', ({ station, data }) => {
+      // Cập nhật dữ liệu cho trạm tương ứng
+      setStationData((prevData) => ({
+        ...prevData,
+        [station]: data,
+      }));
+    });
+
+    const getData = () => {
+      axios.get('http://localhost:8017/v1/liststation/get')
+        .then(response => {
+          const extractedStations = response.data.map(item => item.Station.trim());
+          setStations(extractedStations);
+
+        })
+        .catch(error => {
+          console.error('Error fetching report data:', error);
+        });
+
+    }
+    getData()
+  }, []);
+  console.log('token', token)
+  console.log('token.permis', token.permissions)
   useEffect(() => {
     const getData = () => {
+
       axios.get(`http://localhost:8017/v1/getdataopcua?station=${selectedStation}&option=${selectedOption}`)
         .then(response => {
           setChartData(response.data);
@@ -49,20 +80,30 @@ function Metric() {
         .catch(error => {
           console.error('Error fetching report data:', error);
         });
-    };
 
+    }
     // getData();
     let intervalId = null;
-    if (selectedOption === 'current') {
-      intervalId = setInterval(getData, 10000); // Gọi API mỗi 10 giây (10000ms = 10 giây)
-    } else {
-      getData();
+
+    if (token && token.permissions && !token.permissions.includes(selectedStation)) {
+      if (selectedStation !== 'Choose Station') {
+        toast.warning(`You are not authorized for ${selectedStation}`, { draggable: false })
+      }
+      setSelectedStation(previousStation);
+    }
+    else {
+      if (selectedOption === 'current') {
+        intervalId = setInterval(getData, 10000); // Gọi API mỗi 10 giây (10000ms = 10 giây)
+      } else {
+        getData();
+      }
     }
 
     // Xóa interval khi component unmount hoặc khi selectedOption không còn là 'current'
     return () => {
       clearInterval(intervalId);
-    };
+    }
+
 
   }, [selectedStation, selectedOption]);
 
@@ -72,6 +113,7 @@ function Metric() {
   };
   const handleStationChange = (event) => {
     const selectedValue = event.target.value;
+    setPreviousStation(selectedStation);
     setSelectedStation(selectedValue);
     // Xử lý khi người dùng chọn một trạm
     console.log('Station selected:', selectedValue);
@@ -79,9 +121,7 @@ function Metric() {
   const handleClickOption = (optionId) => {
     setSelectedOption(optionId);
   };
-  console.log(chartData)
-  console.log(selectedOption)
-  console.log(selectedStation)
+
   const renderCharts = () => {
     // Kiểm tra selectedStation và selectedOption để render biểu đồ tương ứng
     // Ví dụ:

@@ -36,6 +36,9 @@ const TableDetail = ({ station }) => {
       })
       key = 'Date'
     }
+    if (key === 'InternetSpeed') {
+      value = `${value.toFixed(2)} ms`
+    }
     return {
       property: key,
       value: value,

@@ -6,7 +6,7 @@ import './Dashboard.css';
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
 import axios from 'axios';
 import TableDetail from '~/components/TableDetail';
-const Dashboard = () => {
+const Dashboard = ({ token }) => {
   const [stationData, setStationData] = useState({});
 
   const [station, setStation] = useState([])

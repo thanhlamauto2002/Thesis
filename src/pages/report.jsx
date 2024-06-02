@@ -9,7 +9,7 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import { Area } from 'recharts';
 
-const Report = ({ username }) => {
+const Report = ({ username, token }) => {
 
   const [stationData, setStationData] = useState({});
   const [stations, setStations] = useState([]);
